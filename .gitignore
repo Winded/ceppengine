@@ -1,0 +1,7 @@
+build/*
+lib/*
+include/*
+
+*.pb.cc
+*.pb.h
+*.user
