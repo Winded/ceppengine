@@ -1,5 +1,4 @@
-#ifndef FMATRIX4_H
-#define FMATRIX4_H
+#pragma once
 
 #include "vector3.h"
 #include "angle.h"
@@ -45,5 +44,3 @@ class Matrix4
 }
 
 std::ostream &operator<<(std::ostream &stream, const cepp::Matrix4 &vec);
-
-#endif // FMATRIX4_H

@@ -1,5 +1,4 @@
-#ifndef FMATH_H
-#define FMATH_H
+#pragma once
 
 #include <math.h>
 
@@ -116,5 +115,3 @@ class Math
 
 }
 
-
-#endif // FMATH_H

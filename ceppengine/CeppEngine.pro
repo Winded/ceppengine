@@ -9,7 +9,9 @@ SOURCES += \
     src/ceppengine/math/math.cpp \
     src/ceppengine/math/matrix4.cpp \
     src/ceppengine/math/transform.cpp \
-    src/ceppengine/math/vector3.cpp
+    src/ceppengine/math/vector3.cpp \
+    src/ceppengine/object.cpp \
+    src/ceppengine/gameobject.cpp
 
 HEADERS += \
     src/ceppengine/math/angle.h \
@@ -18,4 +20,7 @@ HEADERS += \
     src/ceppengine/math/matrix4.h \
     src/ceppengine/math/transform.h \
     src/ceppengine/math/vector3.h \
-    src/ceppengine/global.h
+    src/ceppengine/global.h \
+    src/ceppengine/util/ref.h \
+    src/ceppengine/object.h \
+    src/ceppengine/gameobject.h

@@ -1,5 +1,4 @@
-#ifndef LRAND_H
-#define LRAND_H
+#pragma once
 
 /**
  * @brief Return a random 64-bit integer, if system supports 64-bit integers.
@@ -12,5 +11,3 @@ long lrand();
  * @return
  */
 unsigned long ulrand();
-
-#endif // LRAND_H
