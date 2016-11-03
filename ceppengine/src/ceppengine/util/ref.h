@@ -25,6 +25,7 @@ class Ref
         Type *operator ->();
         Type *operator ->() const;
         operator Type*();
+        operator Type*() const;
 
     private:
         Type *mValue;
@@ -97,7 +98,7 @@ Ref<Type> &Ref<Type>::operator =(int value)
             delete mValue;
         }
     }
-    mValue = value;
+    mValue = 0;
     return *this;
 }
 
@@ -117,6 +118,13 @@ Type *Ref<Type>::operator ->() const
 
 template<class Type>
 Ref<Type>::operator Type *()
+{
+    assert(mValue != 0);
+    return mValue;
+}
+
+template<class Type>
+Ref<Type>::operator Type *() const
 {
     assert(mValue != 0);
     return mValue;

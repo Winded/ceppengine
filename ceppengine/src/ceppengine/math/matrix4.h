@@ -41,6 +41,6 @@ class Matrix4
 
 };
 
-}
+std::ostream &operator<<(std::ostream &stream, const Matrix4 &vec);
 
-std::ostream &operator<<(std::ostream &stream, const cepp::Matrix4 &vec);
+}

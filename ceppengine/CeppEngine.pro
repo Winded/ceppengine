@@ -11,7 +11,11 @@ SOURCES += \
     src/ceppengine/math/transform.cpp \
     src/ceppengine/math/vector3.cpp \
     src/ceppengine/object.cpp \
-    src/ceppengine/gameobject.cpp
+    src/ceppengine/gameobject.cpp \
+    src/ceppengine/engine.cpp \
+    src/ceppengine/assets/assetloader.cpp \
+    src/ceppengine/modules/module.cpp \
+    src/ceppengine/scene.cpp
 
 HEADERS += \
     src/ceppengine/math/angle.h \
@@ -23,4 +27,8 @@ HEADERS += \
     src/ceppengine/global.h \
     src/ceppengine/util/ref.h \
     src/ceppengine/object.h \
-    src/ceppengine/gameobject.h
+    src/ceppengine/gameobject.h \
+    src/ceppengine/engine.h \
+    src/ceppengine/assets/assetloader.h \
+    src/ceppengine/modules/module.h \
+    src/ceppengine/scene.h
