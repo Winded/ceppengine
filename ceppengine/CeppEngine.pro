@@ -24,7 +24,8 @@ SOURCES += \
     src/ceppengine/assets/texture.cpp \
     src/ceppengine/assets/asset.cpp \
     src/ceppengine/assets/shader.cpp \
-    src/ceppengine/assets/mesh.cpp
+    src/ceppengine/assets/mesh.cpp \
+    src/ceppengine/modules/windows/winruntimemodule.cpp
 
 HEADERS += \
     src/ceppengine/math/angle.h \
@@ -49,4 +50,5 @@ HEADERS += \
     src/ceppengine/assets/texture.h \
     src/ceppengine/assets/asset.h \
     src/ceppengine/assets/shader.h \
-    src/ceppengine/assets/mesh.h
+    src/ceppengine/assets/mesh.h \
+    src/ceppengine/modules/windows/winruntimemodule.h

@@ -33,6 +33,9 @@ class Engine
          */
         Scene *scene() const;
 
+        Module *getModule(std::string name) const;
+        void addModule(Module *module);
+
         /**
          * Load a scene into the engine. This needs to be called before starting the engine.
          * The engine cannot run without a scene.

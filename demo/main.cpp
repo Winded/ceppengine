@@ -2,6 +2,7 @@
 #include <ceppengine/math/vector3.h>
 #include <ceppengine/math/matrix4.h>
 #include <ceppengine/engine.h>
+#include <ceppengine/modules/windows/winruntimemodule.h>
 #include <ceppengine/gameobject.h>
 #include <ceppengine/scene.h>
 #include <ceppengine/util/ref.h>
@@ -40,6 +41,7 @@ int main(int argc, char *argv[])
     std::cout << "Ref test complete" << std::endl;
 
     Engine engine;
+    engine.addModule(new WindowsRuntimeModule());
 
     Scene *scene = new Scene();
     engine.loadScene(scene);

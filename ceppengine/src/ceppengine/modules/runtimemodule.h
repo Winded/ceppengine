@@ -13,6 +13,8 @@ class RuntimeModule : public Module
 public:
     RuntimeModule();
 
+    virtual std::string name() const;
+
     /**
      * Return time as seconds since engine start
      */

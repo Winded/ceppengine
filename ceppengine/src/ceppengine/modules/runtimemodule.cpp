@@ -7,6 +7,11 @@ RuntimeModule::RuntimeModule() : mTime(0), mDeltaTime(0), mTimeScale(1.0f)
 
 }
 
+std::string RuntimeModule::name() const
+{
+    return "RuntimeModule";
+}
+
 float RuntimeModule::time() const
 {
     return mTime;

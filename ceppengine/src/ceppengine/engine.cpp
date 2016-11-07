@@ -30,6 +30,19 @@ Scene *Engine::scene() const
     return mScene;
 }
 
+Module *Engine::getModule(std::string name) const
+{
+    for(auto it = mModules.begin(); it != mModules.end(); ++it) {
+        if((*it)->name() == name)
+            return (*it);
+    }
+}
+
+void Engine::addModule(Module *module)
+{
+    mModules.push_back(module);
+}
+
 void Engine::loadScene(Scene *scene)
 {
     if(!mRunning) {

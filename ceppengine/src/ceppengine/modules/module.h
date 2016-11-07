@@ -9,6 +9,8 @@ class Module : public Object
     public:
         Module();
 
+        virtual std::string name() const = 0;
+
     protected:
         virtual void initialize();
         virtual void preUpdate(float deltaTime);
