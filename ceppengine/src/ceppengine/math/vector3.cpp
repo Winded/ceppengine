@@ -123,10 +123,10 @@ Vector3 Vector3::left(-1.f, 0.f, 0.f);
 Vector3 Vector3::up(0.f, 1.f, 0.f);
 Vector3 Vector3::down(0.f, -1.f, 0.f);
 
-}
-
-std::ostream &operator<<(std::ostream &stream, const cepp::Vector3 &vec)
+std::ostream &operator<<(std::ostream &stream, const Vector3 &vec)
 {
     stream << "[" << std::to_string(vec.x) << ", " << std::to_string(vec.y) << ", " << std::to_string(vec.z) << "]";
     return stream;
+}
+
 }

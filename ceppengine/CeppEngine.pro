@@ -15,7 +15,16 @@ SOURCES += \
     src/ceppengine/engine.cpp \
     src/ceppengine/assets/assetloader.cpp \
     src/ceppengine/modules/module.cpp \
-    src/ceppengine/scene.cpp
+    src/ceppengine/scene.cpp \
+    src/ceppengine/modules/runtimemodule.cpp \
+    src/ceppengine/modules/inputmodule.cpp \
+    src/ceppengine/modules/rendermodule.cpp \
+    src/ceppengine/util/color.cpp \
+    src/ceppengine/assets/material.cpp \
+    src/ceppengine/assets/texture.cpp \
+    src/ceppengine/assets/asset.cpp \
+    src/ceppengine/assets/shader.cpp \
+    src/ceppengine/assets/mesh.cpp
 
 HEADERS += \
     src/ceppengine/math/angle.h \
@@ -31,4 +40,13 @@ HEADERS += \
     src/ceppengine/engine.h \
     src/ceppengine/assets/assetloader.h \
     src/ceppengine/modules/module.h \
-    src/ceppengine/scene.h
+    src/ceppengine/scene.h \
+    src/ceppengine/modules/runtimemodule.h \
+    src/ceppengine/modules/inputmodule.h \
+    src/ceppengine/modules/rendermodule.h \
+    src/ceppengine/util/color.h \
+    src/ceppengine/assets/material.h \
+    src/ceppengine/assets/texture.h \
+    src/ceppengine/assets/asset.h \
+    src/ceppengine/assets/shader.h \
+    src/ceppengine/assets/mesh.h

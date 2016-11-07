@@ -196,7 +196,8 @@ inline bool Vector3::operator>=(const Vector3 &otherVector) const
 {
     return x >= otherVector.x && y >= otherVector.y && z >= otherVector.z;
 }
-}
 
 // ostream support
-std::ostream &operator<<(std::ostream &stream, const cepp::Vector3 &vec);
+std::ostream &operator<<(std::ostream &stream, const Vector3 &vec);
+
+}
