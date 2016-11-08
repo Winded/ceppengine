@@ -14,11 +14,9 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case WM_PAINT:
     {
-        WindowsRuntimeModule *esContext = (WindowsRuntimeModule*)(LONG_PTR)GetWindowLongPtr(hWnd, GWLP_USERDATA);
-
         // draw?
 
-        ValidateRect(esContext->getWindowHandle(), NULL);
+        ValidateRect(WindowsRuntimeModule::instance()->getWindowHandle(), NULL);
     }
     break;
 
@@ -29,7 +27,6 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_CHAR:
     {
         POINT      point;
-        WindowsRuntimeModule *esContext = (WindowsRuntimeModule*)(LONG_PTR)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
         GetCursorPos(&point);
 
@@ -45,8 +42,16 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return lRet;
 }
 
+WindowsRuntimeModule *WindowsRuntimeModule::sInstance = 0;
+
+WindowsRuntimeModule *WindowsRuntimeModule::instance()
+{
+    return sInstance;
+}
+
 WindowsRuntimeModule::WindowsRuntimeModule() : mWindowTitle(L"CeppEngine"), mWidth(800), mHeight(600), mWindowHandle(NULL)
 {
+    sInstance = this;
 }
 
 WindowsRuntimeModule::~WindowsRuntimeModule()
@@ -112,9 +117,6 @@ void WindowsRuntimeModule::initialize()
         NULL,
         hInstance,
         NULL);
-
-    // Add pointer to module into window so we can access it with WindowProc
-    SetWindowLongPtr(mWindowHandle, GWLP_USERDATA, (LONG_PTR)(void*)this);
 
     if (mWindowHandle == NULL)
     {

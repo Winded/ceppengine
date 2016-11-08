@@ -8,6 +8,8 @@ namespace cepp {
 class WindowsRuntimeModule : public RuntimeModule
 {
     public:
+        static WindowsRuntimeModule *instance();
+
         WindowsRuntimeModule();
         ~WindowsRuntimeModule();
 
@@ -20,6 +22,8 @@ class WindowsRuntimeModule : public RuntimeModule
         virtual void preUpdate(float deltaTime);
 
     private:
+        static WindowsRuntimeModule *sInstance;
+
         std::wstring mWindowTitle;
         int mWidth, mHeight;
 
