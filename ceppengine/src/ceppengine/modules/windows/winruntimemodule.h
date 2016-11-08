@@ -9,11 +9,18 @@ class WindowsRuntimeModule : public RuntimeModule
 {
     public:
         WindowsRuntimeModule();
+        ~WindowsRuntimeModule();
+
+        HWND getWindowHandle() const;
+
+        virtual std::wstring windowTitle() const;
+        virtual void setWindowTitle(const std::wstring &title);
 
         virtual void initialize();
+        virtual void preUpdate(float deltaTime);
 
     private:
-        std::string mWindowTitle;
+        std::wstring mWindowTitle;
         int mWidth, mHeight;
 
         HWND mWindowHandle;

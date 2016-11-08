@@ -1,10 +1,76 @@
 #include "winruntimemodule.h"
+#include "../../engine.h"
 
 namespace cepp {
 
-WindowsRuntimeModule::WindowsRuntimeModule() : mWindowTitle("CeppEngine"), mWidth(800), mHeight(600), mWindowHandle(NULL)
+LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    LRESULT  lRet = 1;
 
+    switch (uMsg)
+    {
+    case WM_CREATE:
+        break;
+
+    case WM_PAINT:
+    {
+        WindowsRuntimeModule *esContext = (WindowsRuntimeModule*)(LONG_PTR)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+
+        // draw?
+
+        ValidateRect(esContext->getWindowHandle(), NULL);
+    }
+    break;
+
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+
+    case WM_CHAR:
+    {
+        POINT      point;
+        WindowsRuntimeModule *esContext = (WindowsRuntimeModule*)(LONG_PTR)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+
+        GetCursorPos(&point);
+
+        // input handling?
+    }
+    break;
+
+    default:
+        lRet = DefWindowProc(hWnd, uMsg, wParam, lParam);
+        break;
+    }
+
+    return lRet;
+}
+
+WindowsRuntimeModule::WindowsRuntimeModule() : mWindowTitle(L"CeppEngine"), mWidth(800), mHeight(600), mWindowHandle(NULL)
+{
+}
+
+WindowsRuntimeModule::~WindowsRuntimeModule()
+{
+    if(mWindowHandle)
+        CloseWindow(mWindowHandle);
+}
+
+HWND WindowsRuntimeModule::getWindowHandle() const
+{
+    return mWindowHandle;
+}
+
+std::wstring WindowsRuntimeModule::windowTitle() const
+{
+    return mWindowTitle;
+}
+
+void WindowsRuntimeModule::setWindowTitle(const std::wstring &title)
+{
+    mWindowTitle = title;
+    if(mWindowHandle) {
+        SetWindowText(mWindowHandle, mWindowTitle.c_str());
+    }
 }
 
 void WindowsRuntimeModule::initialize()
@@ -47,17 +113,38 @@ void WindowsRuntimeModule::initialize()
         hInstance,
         NULL);
 
-    // Set the ESContext* to the GWL_USERDATA so that it is available to the
-    // ESWindowProc
-    SetWindowLongPtr(mWindowHandle, GWL_USERDATA, (LONG)(LONG_PTR)this);
+    // Add pointer to module into window so we can access it with WindowProc
+    SetWindowLongPtr(mWindowHandle, GWLP_USERDATA, (LONG_PTR)(void*)this);
 
     if (mWindowHandle == NULL)
     {
-        // TODO: Unregister window class if fail
+        UnregisterClass(L"opengles2.0", hInstance);
         return; // fail!
     }
 
     ShowWindow(mWindowHandle, TRUE);
+}
+
+void WindowsRuntimeModule::preUpdate(float deltaTime)
+{
+    MSG msg = { 0 };
+    int gotMsg = (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) != 0);
+    if (gotMsg)
+    {
+        if (msg.message == WM_QUIT)
+        {
+            Engine::instance()->stop();
+        }
+        else
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+    }
+    else
+    {
+        SendMessage(mWindowHandle, WM_PAINT, 0, 0);
+    }
 }
 
 } // namespace cepp

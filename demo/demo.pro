@@ -11,3 +11,6 @@ else:unix: LIBS += -L$$PWD/../build-CeppEngine/ -lCeppEngine
 
 INCLUDEPATH += $$PWD/../ceppengine/src
 DEPENDPATH += $$PWD/../ceppengine/src
+
+msvc: LIBS += -luser32
+msvc: LIBS += -lgdi32

@@ -32,8 +32,8 @@ public:
     float timeScale() const;
     void setTimeScale(float timeScale);
 
-    virtual std::string windowTitle() const = 0;
-    virtual void setWindowTitle(std::string title) = 0;
+    virtual std::wstring windowTitle() const = 0;
+    virtual void setWindowTitle(const std::wstring &title) = 0;
 
 protected:
     float mTime, mDeltaTime, mTimeScale;

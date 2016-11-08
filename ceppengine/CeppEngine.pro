@@ -52,3 +52,7 @@ HEADERS += \
     src/ceppengine/assets/shader.h \
     src/ceppengine/assets/mesh.h \
     src/ceppengine/modules/windows/winruntimemodule.h
+
+
+
+msvc: LIBS += -luser32
