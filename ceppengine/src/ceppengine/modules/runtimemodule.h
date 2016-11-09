@@ -35,6 +35,8 @@ public:
     virtual std::wstring windowTitle() const = 0;
     virtual void setWindowTitle(const std::wstring &title) = 0;
 
+    virtual void preUpdate(float deltaTime);
+
 protected:
     float mTime, mDeltaTime, mTimeScale;
 };

@@ -3,45 +3,6 @@
 
 namespace cepp {
 
-LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-    LRESULT  lRet = 1;
-
-    switch (uMsg)
-    {
-    case WM_CREATE:
-        break;
-
-    case WM_PAINT:
-    {
-        // draw?
-
-        ValidateRect(WindowsRuntimeModule::instance()->getWindowHandle(), NULL);
-    }
-    break;
-
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-
-    case WM_CHAR:
-    {
-        POINT      point;
-
-        GetCursorPos(&point);
-
-        // input handling?
-    }
-    break;
-
-    default:
-        lRet = DefWindowProc(hWnd, uMsg, wParam, lParam);
-        break;
-    }
-
-    return lRet;
-}
-
 WindowsRuntimeModule *WindowsRuntimeModule::sInstance = 0;
 
 WindowsRuntimeModule *WindowsRuntimeModule::instance()
@@ -49,7 +10,7 @@ WindowsRuntimeModule *WindowsRuntimeModule::instance()
     return sInstance;
 }
 
-WindowsRuntimeModule::WindowsRuntimeModule() : mWindowTitle(L"CeppEngine"), mWidth(800), mHeight(600), mWindowHandle(NULL)
+WindowsRuntimeModule::WindowsRuntimeModule() : mWindowTitle(L"CeppEngine"), mWidth(800), mHeight(600), mWindowHandle(NULL), proc(0)
 {
     sInstance = this;
 }
@@ -86,7 +47,7 @@ void WindowsRuntimeModule::initialize()
     HINSTANCE hInstance = GetModuleHandle(NULL);
 
     wndclass.style = CS_OWNDC;
-    wndclass.lpfnWndProc = (WNDPROC)WindowProc;
+    wndclass.lpfnWndProc = proc;
     wndclass.hInstance = hInstance;
     wndclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
     wndclass.lpszClassName = L"opengles2.0";

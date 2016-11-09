@@ -19,12 +19,12 @@ float RuntimeModule::time() const
 
 float RuntimeModule::deltaTime() const
 {
-    return mDeltaTime * mTimeScale;
+    return mDeltaTime;
 }
 
 float RuntimeModule::realDeltaTime() const
 {
-    return mDeltaTime;
+    return mDeltaTime / mTimeScale;
 }
 
 float RuntimeModule::timeScale() const
@@ -35,6 +35,12 @@ float RuntimeModule::timeScale() const
 void RuntimeModule::setTimeScale(float timeScale)
 {
     mTimeScale = timeScale;
+}
+
+void RuntimeModule::preUpdate(float deltaTime)
+{
+    mTime += deltaTime;
+    mDeltaTime = deltaTime;
 }
 
 } // namespace cepp

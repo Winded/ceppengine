@@ -21,6 +21,8 @@ class WindowsRuntimeModule : public RuntimeModule
         virtual void initialize();
         virtual void preUpdate(float deltaTime);
 
+        WNDPROC proc;
+
     private:
         static WindowsRuntimeModule *sInstance;
 
