@@ -26,7 +26,8 @@ SOURCES += \
     src/ceppengine/assets/shader.cpp \
     src/ceppengine/assets/mesh.cpp \
     src/ceppengine/modules/windows/winruntimemodule.cpp \
-    src/ceppengine/modules/gles/glesrendermodule.cpp
+    src/ceppengine/modules/gles/glesrendermodule.cpp \
+    src/ceppengine/modules/windows/windowsinputmodule.cpp
 
 HEADERS += \
     src/ceppengine/math/angle.h \
@@ -71,7 +72,8 @@ HEADERS += \
     src/ceppengine/modules/gles/GLES3/gl3platform.h \
     src/ceppengine/modules/gles/GLES3/gl31.h \
     src/ceppengine/modules/gles/KHR/khrplatform.h \
-    src/ceppengine/modules/gles/glesrendermodule.h
+    src/ceppengine/modules/gles/glesrendermodule.h \
+    src/ceppengine/modules/windows/windowsinputmodule.h
 
 
 

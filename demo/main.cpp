@@ -4,6 +4,7 @@
 #include <ceppengine/math/matrix4.h>
 #include <ceppengine/engine.h>
 #include <ceppengine/modules/windows/winruntimemodule.h>
+#include <ceppengine/modules/windows/windowsinputmodule.h>
 #include <ceppengine/gameobject.h>
 #include <ceppengine/scene.h>
 #include <ceppengine/util/ref.h>
@@ -21,9 +22,9 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case WM_PAINT:
     {
-        WindowsRuntimeModule *module = (WindowsRuntimeModule*)Engine::instance()->getModule("RuntimeModule");
+        WindowsRuntimeModule *module = (WindowsRuntimeModule*)Engine::instance()->runtimeModule();
 
-        // draw?
+        // draw
 
         ValidateRect(module->getWindowHandle(), NULL);
     }
@@ -33,12 +34,73 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         PostQuitMessage(0);
         break;
 
-    case WM_CHAR:
+    case WM_KEYDOWN:
+    {
+        int key = GET_KEYSTATE_WPARAM(wParam);
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->setKeyDown(key);
+    }
+    break;
+
+    case WM_KEYUP:
+    {
+        int key = GET_KEYSTATE_WPARAM(wParam);
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->setKeyUp(key);
+    }
+    break;
+
+    case WM_MOUSEMOVE:
     {
         POINT point;
         GetCursorPos(&point);
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->updateMousePosition(point);
+    }
+    break;
 
-        // input handling?
+    case WM_MOUSEWHEEL:
+    {
+        float delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->updateMouseDelta(delta);
+    }
+    break;
+
+    case WM_LBUTTONDOWN:
+    {
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->setMouseButtonDown(0);
+    }
+    break;
+    case WM_LBUTTONUP:
+    {
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->setMouseButtonUp(0);
+    }
+    break;
+    case WM_RBUTTONDOWN:
+    {
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->setMouseButtonDown(1);
+    }
+    break;
+    case WM_RBUTTONUP:
+    {
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->setMouseButtonUp(1);
+    }
+    break;
+    case WM_MBUTTONDOWN:
+    {
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->setMouseButtonDown(2);
+    }
+    break;
+    case WM_MBUTTONUP:
+    {
+        WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
+        module->setMouseButtonUp(2);
     }
     break;
 
@@ -85,6 +147,7 @@ int main(int argc, char *argv[])
     auto runtimeMod = new WindowsRuntimeModule();
     runtimeMod->proc = WindowProc;
     engine.addModule(runtimeMod);
+    engine.addModule(new WindowsInputModule());
 
     Scene *scene = new Scene();
     engine.loadScene(scene);
@@ -94,7 +157,7 @@ int main(int argc, char *argv[])
     engine.start();
     while(engine.isRunning()) {
         clock_t currentTime = clock();
-        float deltaTime = (currentTime - timer) / (float)CLOCKS_PER_SEC;
+        float deltaTime = (float)(currentTime - timer) / (float)CLOCKS_PER_SEC;
         deltaTime = deltaTime * runtimeMod->timeScale();
         timer = currentTime;
         engine.update(deltaTime);

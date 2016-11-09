@@ -5,6 +5,9 @@
 
 namespace cepp {
 
+/**
+ * Runtime module for the Windows platform. This uses the Windows API to create a window.
+ */
 class WindowsRuntimeModule : public RuntimeModule
 {
     public:

@@ -13,6 +13,8 @@ class InputModule : public Module
 public:
     InputModule();
 
+    virtual std::string name() const;
+
     virtual Vector3 mousePosition() const = 0;
 
     virtual float mouseScrollDelta() const = 0;

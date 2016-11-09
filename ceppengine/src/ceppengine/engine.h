@@ -3,6 +3,9 @@
 #include "assets/assetloader.h"
 #include "util/ref.h"
 #include "modules/module.h"
+#include "modules/runtimemodule.h"
+#include "modules/inputmodule.h"
+#include "modules/rendermodule.h"
 #include "scene.h"
 #include <vector>
 
@@ -36,6 +39,11 @@ class Engine
         Module *getModule(std::string name) const;
         void addModule(Module *module);
 
+        // Function shortcuts for generic module types
+        RuntimeModule *runtimeModule();
+        InputModule *inputModule();
+        RenderModule *renderModule();
+
         /**
          * Load a scene into the engine. This needs to be called before starting the engine.
          * The engine cannot run without a scene.
@@ -50,6 +58,10 @@ class Engine
         bool mRunning;
 
         std::vector<Ref<Module>> mModules;
+
+        RuntimeModule *mCachedRuntimeModule;
+        InputModule *mCachedInputModule;
+        RenderModule *mCachedRenderModule;
 
         AssetLoader mAssetLoader;
 

@@ -7,4 +7,9 @@ InputModule::InputModule()
 
 }
 
+std::string InputModule::name() const
+{
+    return "InputModule";
+}
+
 } // namespace cepp

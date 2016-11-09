@@ -33,6 +33,8 @@ class RenderModule : public Module
 public:
     RenderModule();
 
+    virtual std::string name() const;
+
     virtual Vector3 screenResolution() const = 0;
     virtual void setScreenResolution(const Vector3 &res) = 0;
 

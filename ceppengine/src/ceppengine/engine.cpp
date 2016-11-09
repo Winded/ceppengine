@@ -9,7 +9,7 @@ Engine *Engine::instance()
     return sInstance;
 }
 
-Engine::Engine() : mRunning(false)
+Engine::Engine() : mRunning(false), mCachedRuntimeModule(0), mCachedInputModule(0), mCachedRenderModule(0), mNewScene(0)
 {
     if(!sInstance)
         sInstance = this;
@@ -41,6 +41,48 @@ Module *Engine::getModule(std::string name) const
 void Engine::addModule(Module *module)
 {
     mModules.push_back(module);
+}
+
+RuntimeModule *Engine::runtimeModule()
+{
+    if(mRunning && mCachedRuntimeModule) {
+        return mCachedRuntimeModule;
+    }
+    else if(mRunning) {
+        mCachedRuntimeModule = (RuntimeModule*)getModule("RuntimeModule");
+        return mCachedRuntimeModule;
+    }
+    else {
+        return (RuntimeModule*)getModule("RuntimeModule");
+    }
+}
+
+InputModule *Engine::inputModule()
+{
+    if(mRunning && mCachedInputModule) {
+        return mCachedInputModule;
+    }
+    else if(mRunning) {
+        mCachedInputModule = (InputModule*)getModule("InputModule");
+        return mCachedInputModule;
+    }
+    else {
+        return (InputModule*)getModule("InputModule");
+    }
+}
+
+RenderModule *Engine::renderModule()
+{
+    if(mRunning && mCachedRenderModule) {
+        return mCachedRenderModule;
+    }
+    else if(mRunning) {
+        mCachedRenderModule = (RenderModule*)getModule("RenderModule");
+        return mCachedRenderModule;
+    }
+    else {
+        return (RenderModule*)getModule("RenderModule");
+    }
 }
 
 void Engine::loadScene(Scene *scene)
