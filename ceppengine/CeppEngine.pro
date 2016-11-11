@@ -54,27 +54,16 @@ HEADERS += \
     src/ceppengine/assets/shader.h \
     src/ceppengine/assets/mesh.h \
     src/ceppengine/modules/windows/winruntimemodule.h \
-    src/ceppengine/modules/gles/EGL/egl.h \
-    src/ceppengine/modules/gles/EGL/eglext.h \
-    src/ceppengine/modules/gles/EGL/eglplatform.h \
-    src/ceppengine/modules/gles/EGL/eglQCOM.h \
-    src/ceppengine/modules/gles/GLES/egl.h \
-    src/ceppengine/modules/gles/GLES/gl.h \
-    src/ceppengine/modules/gles/GLES/gl_ati_extensions.h \
-    src/ceppengine/modules/gles/GLES/glext.h \
-    src/ceppengine/modules/gles/GLES/glextQCOM.h \
-    src/ceppengine/modules/gles/GLES/glplatform.h \
-    src/ceppengine/modules/gles/GLES2/gl2.h \
-    src/ceppengine/modules/gles/GLES2/gl2ext.h \
-    src/ceppengine/modules/gles/GLES2/gl2platform.h \
-    src/ceppengine/modules/gles/GLES3/gl3.h \
-    src/ceppengine/modules/gles/GLES3/gl3ext.h \
-    src/ceppengine/modules/gles/GLES3/gl3platform.h \
-    src/ceppengine/modules/gles/GLES3/gl31.h \
-    src/ceppengine/modules/gles/KHR/khrplatform.h \
     src/ceppengine/modules/gles/glesrendermodule.h \
     src/ceppengine/modules/windows/windowsinputmodule.h
 
 
 
 msvc: LIBS += -luser32
+
+INCLUDEPATH += $$PWD/src/ceppengine/modules/gles
+
+unix|win32: LIBS += -L$$PWD/../lib/ -llibEGL -llibGLESv2
+
+INCLUDEPATH += $$PWD/../include
+DEPENDPATH += $$PWD/../include

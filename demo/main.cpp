@@ -5,6 +5,7 @@
 #include <ceppengine/engine.h>
 #include <ceppengine/modules/windows/winruntimemodule.h>
 #include <ceppengine/modules/windows/windowsinputmodule.h>
+#include <ceppengine/modules/gles/glesrendermodule.h>
 #include <ceppengine/gameobject.h>
 #include <ceppengine/scene.h>
 #include <ceppengine/util/ref.h>
@@ -148,6 +149,9 @@ int main(int argc, char *argv[])
     runtimeMod->proc = WindowProc;
     engine.addModule(runtimeMod);
     engine.addModule(new WindowsInputModule());
+    auto renderMod = new GLESRenderModule();
+    renderMod->setNativeData(runtimeMod->getWindowHandle(), GetDC(runtimeMod->getWindowHandle()));
+    engine.addModule(renderMod);
 
     Scene *scene = new Scene();
     engine.loadScene(scene);

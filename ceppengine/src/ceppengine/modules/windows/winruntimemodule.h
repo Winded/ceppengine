@@ -2,6 +2,7 @@
 
 #include "../runtimemodule.h"
 #include <Windows.h>
+#include <EGL/eglplatform.h>
 
 namespace cepp {
 
@@ -20,6 +21,9 @@ class WindowsRuntimeModule : public RuntimeModule
 
         virtual std::wstring windowTitle() const;
         virtual void setWindowTitle(const std::wstring &title);
+
+        virtual Vector3 screenResolution() const;
+        virtual void setScreenResolution(const Vector3 &res);
 
         virtual void initialize();
         virtual void preUpdate(float deltaTime);

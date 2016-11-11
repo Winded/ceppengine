@@ -35,9 +35,6 @@ public:
 
     virtual std::string name() const;
 
-    virtual Vector3 screenResolution() const = 0;
-    virtual void setScreenResolution(const Vector3 &res) = 0;
-
     /**
      * Load a shader into the graphics API
      */

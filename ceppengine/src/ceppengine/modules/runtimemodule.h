@@ -1,6 +1,7 @@
 #pragma once
 
 #include "module.h"
+#include "../math/vector3.h"
 
 namespace cepp {
 
@@ -34,6 +35,9 @@ public:
 
     virtual std::wstring windowTitle() const = 0;
     virtual void setWindowTitle(const std::wstring &title) = 0;
+
+    virtual Vector3 screenResolution() const = 0;
+    virtual void setScreenResolution(const Vector3 &res) = 0;
 
     virtual void preUpdate(float deltaTime);
 

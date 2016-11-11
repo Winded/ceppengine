@@ -39,6 +39,24 @@ void WindowsRuntimeModule::setWindowTitle(const std::wstring &title)
     }
 }
 
+Vector3 WindowsRuntimeModule::screenResolution() const
+{
+    return Vector3(mWidth, mHeight, 0);
+}
+
+void WindowsRuntimeModule::setScreenResolution(const Vector3 &res)
+{
+    mWidth = (int)res.x;
+    mHeight = (int)res.y;
+    if(mWindowHandle) {
+        LPRECT rect;
+        GetWindowRect(mWindowHandle, rect);
+        HDWP info = BeginDeferWindowPos(1);
+        info = DeferWindowPos(info, mWindowHandle, NULL, rect->left, rect->top, mWidth, mHeight, 0);
+        EndDeferWindowPos(info);
+    }
+}
+
 void WindowsRuntimeModule::initialize()
 {
     WNDCLASS wndclass = { 0 };
