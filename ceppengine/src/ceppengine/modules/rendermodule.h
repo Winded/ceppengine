@@ -17,12 +17,12 @@ public:
     virtual void setMaterial(Material *material) = 0;
 
     virtual Mesh *mesh() const = 0;
-    virtual void setMesh(Mesh *mesh);
+    virtual void setMesh(Mesh *mesh) = 0;
 
     virtual void applySettings() = 0;
 
     virtual void draw() = 0;
-    virtual void clear(Color color);
+    virtual void clear(Color color) = 0;
 };
 
 /**
@@ -56,9 +56,9 @@ public:
     virtual void updateTexture(int handle, Texture *texture) = 0;
     virtual void deleteTexture(int handle) = 0;
 
-    virtual float *getGlobalShaderParam(std::string name) const = 0;
-    virtual void setGlobalShaderParam(std::string name, float value[]) = 0;
-    virtual void deleteGlobalShaderParam(std::string name) = 0;
+    virtual float *getGlobalShaderParam(const std::string &name, int *size) const = 0;
+    virtual void setGlobalShaderParam(const std::string &name, float *value, int size) = 0;
+    virtual void deleteGlobalShaderParam(const std::string &name) = 0;
 };
 
 } // namespace cepp

@@ -7,12 +7,31 @@
 
 namespace cepp {
 
+class GLESRenderer : IRenderer
+{
+    public:
+        GLESRenderer();
+
+        virtual Material *material() const;
+        virtual void setMaterial(Material *material);
+
+        virtual Mesh *mesh() const;
+        virtual void setMesh(Mesh *mesh);
+
+        virtual void applySettings();
+
+        virtual void draw() = 0;
+        virtual void clear(Color color);
+
+    private:
+        Material *mMaterial;
+        Mesh *mMesh;
+};
+
 class GLESRenderModule : public RenderModule
 {
     public:
         GLESRenderModule();
-
-        void setNativeData(EGLNativeWindowType window, EGLNativeDisplayType display);
 
         virtual int createShader(Shader *shader);
         virtual void updateShader(int handle, Shader *shader);
@@ -26,9 +45,9 @@ class GLESRenderModule : public RenderModule
         virtual void updateTexture(int handle, Texture *texture);
         virtual void deleteTexture(int handle);
 
-        virtual float *getGlobalShaderParam(std::string name) const;
-        virtual void setGlobalShaderParam(std::string name, float value[]);
-        virtual void deleteGlobalShaderParam(std::string name);
+        virtual float *getGlobalShaderParam(const std::string &name, int *size) const;
+        virtual void setGlobalShaderParam(const std::string &name, float *value, int size);
+        virtual void deleteGlobalShaderParam(const std::string &name);
 
         virtual void initialize();
 

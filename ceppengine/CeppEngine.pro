@@ -61,9 +61,7 @@ HEADERS += \
 
 msvc: LIBS += -luser32
 
-INCLUDEPATH += $$PWD/src/ceppengine/modules/gles
-
-unix|win32: LIBS += -L$$PWD/../lib/ -llibEGL -llibGLESv2
+#unix|win32: LIBS += -L$$PWD/../lib/ -llibEGL -llibGLESv2
 
 INCLUDEPATH += $$PWD/../include
 DEPENDPATH += $$PWD/../include

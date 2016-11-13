@@ -1,16 +1,53 @@
 #include "glesrendermodule.h"
+#include "../../engine.h"
+#include "../windows/winruntimemodule.h"
+#include <GLES2/gl2.h>
 
 namespace cepp {
 
-GLESRenderModule::GLESRenderModule()
+GLESRenderer::GLESRenderer() : mMaterial(0), mMesh(0)
 {
 
 }
 
-void GLESRenderModule::setNativeData(EGLNativeWindowType window, EGLNativeDisplayType display)
+Material *GLESRenderer::material() const
 {
-    mNativeWindow = window;
-    mNativeDisplay = display;
+    return mMaterial;
+}
+
+void GLESRenderer::setMaterial(Material *material)
+{
+    mMaterial = material;
+}
+
+Mesh *GLESRenderer::mesh() const
+{
+    return mMesh;
+}
+
+void GLESRenderer::setMesh(Mesh *mesh)
+{
+    mMesh = mesh;
+}
+
+void GLESRenderer::applySettings()
+{
+    // TODO
+}
+
+void GLESRenderer::clear(Color color)
+{
+    glClearColor(color.r, color.g, color.b, color.a);
+}
+
+void GLESRenderer::draw()
+{
+    // TODO
+}
+
+GLESRenderModule::GLESRenderModule()
+{
+
 }
 
 int GLESRenderModule::createShader(Shader *shader)
@@ -61,24 +98,29 @@ void GLESRenderModule::deleteTexture(int handle)
     // TODO
 }
 
-float *GLESRenderModule::getGlobalShaderParam(std::string name) const
+float *GLESRenderModule::getGlobalShaderParam(const std::string &name, int *size) const
 {
     // TODO
     return 0;
 }
 
-void GLESRenderModule::setGlobalShaderParam(std::string name, float value[])
+void GLESRenderModule::setGlobalShaderParam(const std::string &name, float *value, int size)
 {
     // TODO
 }
 
-void GLESRenderModule::deleteGlobalShaderParam(std::string name)
+void GLESRenderModule::deleteGlobalShaderParam(const std::string &name)
 {
     // TODO
 }
 
 void GLESRenderModule::initialize()
 {
+    // Windows code
+    WindowsRuntimeModule *runtimeMod = (WindowsRuntimeModule*)Engine::instance()->getModule("RuntimeModule");
+    mNativeWindow = runtimeMod->getWindowHandle();
+    mNativeDisplay = GetDC(runtimeMod->getWindowHandle());
+
     assert(mNativeWindow && mNativeDisplay);
 
     EGLint attribList[] = {

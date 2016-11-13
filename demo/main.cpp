@@ -149,9 +149,7 @@ int main(int argc, char *argv[])
     runtimeMod->proc = WindowProc;
     engine.addModule(runtimeMod);
     engine.addModule(new WindowsInputModule());
-    auto renderMod = new GLESRenderModule();
-    renderMod->setNativeData(runtimeMod->getWindowHandle(), GetDC(runtimeMod->getWindowHandle()));
-    engine.addModule(renderMod);
+    engine.addModule(new GLESRenderModule());
 
     Scene *scene = new Scene();
     engine.loadScene(scene);
