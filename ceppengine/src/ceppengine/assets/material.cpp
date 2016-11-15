@@ -27,6 +27,11 @@ void Material::setTexture(Texture *texture)
     mTexture = texture;
 }
 
+const std::vector<ShaderParameter> &Material::shaderParameters() const
+{
+    return mShaderParameters;
+}
+
 float *Material::getShaderParam(std::string name) const
 {
     // TODO

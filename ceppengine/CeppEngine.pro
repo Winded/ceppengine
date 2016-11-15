@@ -27,7 +27,8 @@ SOURCES += \
     src/ceppengine/assets/mesh.cpp \
     src/ceppengine/modules/windows/winruntimemodule.cpp \
     src/ceppengine/modules/gles/glesrendermodule.cpp \
-    src/ceppengine/modules/windows/windowsinputmodule.cpp
+    src/ceppengine/modules/windows/windowsinputmodule.cpp \
+    src/ceppengine/assets/default.cpp
 
 HEADERS += \
     src/ceppengine/math/angle.h \
@@ -55,7 +56,8 @@ HEADERS += \
     src/ceppengine/assets/mesh.h \
     src/ceppengine/modules/windows/winruntimemodule.h \
     src/ceppengine/modules/gles/glesrendermodule.h \
-    src/ceppengine/modules/windows/windowsinputmodule.h
+    src/ceppengine/modules/windows/windowsinputmodule.h \
+    src/ceppengine/assets/default.h
 
 
 

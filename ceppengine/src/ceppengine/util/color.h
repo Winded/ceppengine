@@ -16,7 +16,7 @@ class Color
         Color(int pR, int pG, int pB, int pA);
 
         // Values
-        int8_t r, g, b, a;
+        uint8_t r, g, b, a;
 
         // Static defaults
         static Color black;

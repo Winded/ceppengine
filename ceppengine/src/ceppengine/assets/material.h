@@ -7,16 +7,18 @@
 
 namespace cepp {
 
+struct ShaderParameter {
+        std::string name;
+        float *data;
+        int size;
+};
+
 /**
  * Materials tell how a mesh should be rendered. It can provide a texture, shader and shader parameters to be passed to the render API.
  */
 class Material : public Asset
 {
 public:
-    struct ShaderParameter {
-        std::string name;
-        float value[];
-    };
 
     Material();
 
@@ -26,6 +28,7 @@ public:
     Texture *texture() const;
     void setTexture(Texture *texture);
 
+    const std::vector<ShaderParameter> &shaderParameters() const;
     float *getShaderParam(std::string name) const;
     void setShaderParam(std::string name, float value[]);
     void deleteShaderParam(std::string name);

@@ -9,8 +9,31 @@ namespace cepp {
  */
 class Mesh : public Asset
 {
-public:
-    Mesh();
+    public:
+        Mesh(float *vertices, int verticesLength, int *indices, int indexLength);
+        Mesh(float *vertices, int verticesLength, float *uvCoords, int uvCoordsLength, int *indices, int indexLength);
+        ~Mesh();
+
+        /**
+         * Load mesh into the graphics module, if it is not loaded already
+         */
+        int load();
+
+        float *vertices() const;
+        int verticesLength() const;
+
+        float *uvCoordinates() const;
+        int uvCoordinatesLength() const;
+
+        int *indices() const;
+        int indicesLength() const;
+
+    private:
+        int mModuleHandle;
+
+        float *mVertices, *mUVCoordinates;
+        int *mIndices;
+        int mVertexLength, mUVCoordinatesLength, mIndexLength;
 };
 
 } // namespace cepp

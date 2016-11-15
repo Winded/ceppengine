@@ -2,12 +2,25 @@
 
 #include "../rendermodule.h"
 #include "../../util/ref.h"
-#include "EGL/egl.h"
-#include "EGL/eglplatform.h"
+#include <EGL/egl.h>
+#include <EGL/eglplatform.h>
+#include "../../assets/material.h"
 
 namespace cepp {
 
-class GLESRenderer : IRenderer
+class GLESRenderModule;
+
+struct GLESModel {
+        GLESModel(unsigned int vbo, unsigned int ebo) : VBO(vbo), EBO(ebo) {}
+        unsigned int VBO, EBO;
+};
+
+struct GLESRenderCallback {
+        Object *object;
+        RenderModule::Callback callback;
+};
+
+class GLESRenderer : public IRenderer
 {
     public:
         GLESRenderer();
@@ -20,10 +33,14 @@ class GLESRenderer : IRenderer
 
         virtual void applySettings();
 
-        virtual void draw() = 0;
+        virtual void draw();
         virtual void clear(Color color);
 
+        GLESRenderModule *module;
+
     private:
+        void applyShaderParams(int program, const std::vector<ShaderParameter> &params);
+
         Material *mMaterial;
         Mesh *mMesh;
 };
@@ -32,6 +49,9 @@ class GLESRenderModule : public RenderModule
 {
     public:
         GLESRenderModule();
+
+        virtual void addHandler(Object *object, Callback function);
+        virtual void removeHandler(Object *object);
 
         virtual int createShader(Shader *shader);
         virtual void updateShader(int handle, Shader *shader);
@@ -51,12 +71,25 @@ class GLESRenderModule : public RenderModule
 
         virtual void initialize();
 
+        void render();
+
     private:
+        float *combineArraysToBuffer(float *vertices, int vertexLength, float *uvCoords, int uvCoordsLength, int *length);
+
         EGLNativeWindowType mNativeWindow;
         EGLNativeDisplayType mNativeDisplay;
         EGLDisplay mEGLDisplay;
         EGLContext mEGLContext;
         EGLSurface mEGLSurface;
+
+        GLESRenderer mRenderer;
+
+        std::vector<GLESRenderCallback> mHandlers;
+
+        std::vector<GLESModel> mModels;
+        std::vector<ShaderParameter> mShaderParams;
+
+        friend class GLESRenderer;
 };
 
 } // namespace cepp

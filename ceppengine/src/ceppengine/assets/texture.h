@@ -9,8 +9,24 @@ namespace cepp {
  */
 class Texture : public Asset
 {
-public:
-    Texture();
+    public:
+        Texture(int width, int height, void *data);
+        ~Texture();
+
+        /**
+         * Load texture into the graphics module, if it is not loaded already
+         */
+        int load();
+
+        int width() const;
+        int height() const;
+        const void *data() const;
+
+    private:
+        int mModuleHandle;
+
+        int mWidth, mHeight;
+        void *mData;
 };
 
 } // namespace cepp

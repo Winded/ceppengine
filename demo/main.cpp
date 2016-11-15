@@ -23,11 +23,12 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case WM_PAINT:
     {
-        WindowsRuntimeModule *module = (WindowsRuntimeModule*)Engine::instance()->runtimeModule();
+        WindowsRuntimeModule *runtimeModule = (WindowsRuntimeModule*)Engine::instance()->runtimeModule();
+        GLESRenderModule *renderModule = (GLESRenderModule*)Engine::instance()->renderModule();
 
-        // draw
+        renderModule->render();
 
-        ValidateRect(module->getWindowHandle(), NULL);
+        ValidateRect(runtimeModule->getWindowHandle(), NULL);
     }
     break;
 
@@ -129,6 +130,78 @@ void testRefs() {
     }
 }
 
+Mesh *testMesh = 0;
+Material *testMaterial = 0;
+
+void renderCallback(Object *object, IRenderer *renderer) {
+    renderer->setMesh(testMesh);
+    renderer->setMaterial(testMaterial);
+    renderer->applySettings();
+    renderer->draw();
+}
+
+void testRendering() {
+    testMesh = new Mesh(new float[] {
+        -0.5f, 0.5f, 0,
+        0.5f, 0.5f, 0,
+        0.5f, -0.5f, 0,
+        -0.5f, -0.5f, 0
+    }, 4 * 3, new float[] {
+        0, 0,
+        0, 1,
+        1, 1,
+        1, 0
+    }, 4 * 2, new int[] {
+        0, 1, 3,
+        1, 2, 3
+    }, 6);
+
+    Texture *texture = new Texture(1, 1, new char[] {(char)255, (char)255, (char)255, (char)255});
+    Shader *shader = new Shader(
+                "precision mediump float;                                                                     \
+                attribute vec3 position;                                                                      \
+                attribute vec2 uvCoordinates;                                                                 \
+                                                                                                              \
+                varying vec2 UV;                                                                              \
+                                                                                                              \
+                uniform mat4 WorldToViewportMatrix;                                                           \
+                uniform mat4 LocalToWorldMatrix;                                                              \
+                                                                                                              \
+                void main()                                                                                   \
+                {                                                                                             \
+                    gl_Position = WorldToViewportMatrix * LocalToWorldMatrix * vec4(position.xyz, 1.0);       \
+                    UV = uvCoordinates;                                                                       \
+                }",
+                "precision mediump float;                                                                     \
+                varying vec2 UV;                                                                              \
+                                                                                                              \
+                uniform sampler2D Texture1;                                                                   \
+                uniform vec4 BaseColor;                                                                       \
+                                                                                                              \
+                void main()                                                                                   \
+                {                                                                                             \
+                    gl_FragColor = texture2D(Texture1, UV) * BaseColor;                                       \
+                }"
+                );
+    testMaterial = new Material();
+    testMaterial->setShader(shader);
+    testMaterial->setTexture(texture);
+
+    Matrix4 id = Matrix4::identity;
+    float matIdentity[] = {
+        id.m11, id.m12, id.m13, id.m14,
+        id.m21, id.m22, id.m23, id.m24,
+        id.m31, id.m32, id.m33, id.m34,
+        id.m41, id.m42, id.m43, id.m44
+    };
+    float color[] = {1.f, 1.f, 1.f, 1.f};
+    Engine::instance()->renderModule()->setGlobalShaderParam("WorldToViewportMatrix", matIdentity, 4 * 4);
+    Engine::instance()->renderModule()->setGlobalShaderParam("LocalToWorldMatrix", matIdentity, 4 * 4);
+    Engine::instance()->renderModule()->setGlobalShaderParam("BaseColor", color, 4);
+
+    Engine::instance()->renderModule()->addHandler(Engine::instance()->scene(), renderCallback);
+}
+
 int main(int argc, char *argv[])
 {
     Vector3 vec(1, 1, 1);
@@ -157,6 +230,7 @@ int main(int argc, char *argv[])
     clock_t timer = clock();
 
     engine.start();
+    testRendering();
     while(engine.isRunning()) {
         clock_t currentTime = clock();
         float deltaTime = (float)(currentTime - timer) / (float)CLOCKS_PER_SEC;
