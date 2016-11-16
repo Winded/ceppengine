@@ -1,7 +1,6 @@
 #pragma once
 
 #include "vector3.h"
-#include "angle.h"
 
 namespace cepp{
 
@@ -35,7 +34,7 @@ class Matrix4
         /**
          * @brief Create a translation, rotation and scale matrix
          */
-        static Matrix4 trs(Vector3 position, Angle rotation, Vector3 scale);
+        static Matrix4 trs(Vector3 position, Vector3 rotation, Vector3 scale);
 
         static Matrix4 identity;
 

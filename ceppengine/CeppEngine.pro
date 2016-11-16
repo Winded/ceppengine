@@ -4,11 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-    src/ceppengine/math/angle.cpp \
     src/ceppengine/math/lrand.cpp \
     src/ceppengine/math/math.cpp \
     src/ceppengine/math/matrix4.cpp \
-    src/ceppengine/math/transform.cpp \
     src/ceppengine/math/vector3.cpp \
     src/ceppengine/object.cpp \
     src/ceppengine/gameobject.cpp \
@@ -28,14 +26,13 @@ SOURCES += \
     src/ceppengine/modules/windows/winruntimemodule.cpp \
     src/ceppengine/modules/gles/glesrendermodule.cpp \
     src/ceppengine/modules/windows/windowsinputmodule.cpp \
-    src/ceppengine/assets/default.cpp
+    src/ceppengine/assets/default.cpp \
+    src/ceppengine/components/component.cpp
 
 HEADERS += \
-    src/ceppengine/math/angle.h \
     src/ceppengine/math/lrand.h \
     src/ceppengine/math/math.h \
     src/ceppengine/math/matrix4.h \
-    src/ceppengine/math/transform.h \
     src/ceppengine/math/vector3.h \
     src/ceppengine/global.h \
     src/ceppengine/util/ref.h \
@@ -57,7 +54,8 @@ HEADERS += \
     src/ceppengine/modules/windows/winruntimemodule.h \
     src/ceppengine/modules/gles/glesrendermodule.h \
     src/ceppengine/modules/windows/windowsinputmodule.h \
-    src/ceppengine/assets/default.h
+    src/ceppengine/assets/default.h \
+    src/ceppengine/components/component.h
 
 
 

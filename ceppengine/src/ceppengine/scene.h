@@ -1,10 +1,11 @@
 #pragma once
 
 #include "object.h"
-#include "gameobject.h"
 #include "util/ref.h"
 
 namespace cepp {
+
+class GameObject;
 
 class Scene : public Object
 {

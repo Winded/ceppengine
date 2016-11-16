@@ -87,6 +87,40 @@ Vector3 Vector3::fromPositionMatrix(const Matrix4 &mat)
     return vec;
 }
 
+Matrix4 Vector3::toRotationMatrix() const
+{
+    Matrix4 xMatrix = Matrix4::identity;
+    xMatrix.m22 = Math::cos(x * Math::deg2rad);
+    xMatrix.m23 = -Math::sin(x * Math::deg2rad);
+    xMatrix.m32 = Math::sin(x * Math::deg2rad);
+    xMatrix.m33 = Math::cos(x * Math::deg2rad);
+
+    Matrix4 yMatrix = Matrix4::identity;
+    yMatrix.m11 = Math::cos(y * Math::deg2rad);
+    yMatrix.m31 = -Math::sin(y * Math::deg2rad);
+    yMatrix.m13 = Math::sin(y * Math::deg2rad);
+    yMatrix.m33 = Math::cos(y * Math::deg2rad);
+
+    Matrix4 zMatrix = Matrix4::identity;
+    zMatrix.m11 = Math::cos(z * Math::deg2rad);
+    zMatrix.m12 = -Math::sin(z * Math::deg2rad);
+    zMatrix.m21 = Math::sin(z * Math::deg2rad);
+    zMatrix.m22 = Math::cos(z * Math::deg2rad);
+
+    Matrix4 mat = xMatrix * yMatrix * zMatrix;
+    return mat;
+}
+
+Vector3 Vector3::fromRotationMatrix(const Matrix4 &mat)
+{
+    // Not perfect. Problems with Y axis.
+    Vector3 rot;
+    rot.x = Math::atan2(mat.m32, mat.m33) * Math::rad2deg;
+    rot.y = Math::atan2(-mat.m31, Math::sqrt(Math::pow(mat.m32, 2) + Math::pow(mat.m33, 2))) * Math::rad2deg;
+    rot.z = Math::atan2(mat.m21, mat.m11) * Math::rad2deg;
+    return rot;
+}
+
 Matrix4 Vector3::toScaleMatrix() const
 {
     Matrix4 m = Matrix4::identity;

@@ -49,6 +49,15 @@ class CEPP_DLL Vector3
         static Vector3 fromPositionMatrix(const Matrix4 &mat);
 
         /**
+         * @brief Convert rotation vector to matrix
+         */
+        Matrix4 toRotationMatrix() const;
+        /**
+         * @brief Convert matrix to rotation vector
+         */
+        static Vector3 fromRotationMatrix(const Matrix4 &mat);
+
+        /**
          * @brief Convert scale vector to matrix
          */
         Matrix4 toScaleMatrix() const;

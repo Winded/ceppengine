@@ -114,7 +114,7 @@ Matrix4 Matrix4::invert() const
     return result;
 }
 
-Matrix4 Matrix4::trs(Vector3 position, Angle rotation, Vector3 scale)
+Matrix4 Matrix4::trs(Vector3 position, Vector3 rotation, Vector3 scale)
 {
     // Transformation matrix
     Matrix4 tMatrix = Matrix4::identity;

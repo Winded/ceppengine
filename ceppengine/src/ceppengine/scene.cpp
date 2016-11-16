@@ -1,4 +1,5 @@
 #include "scene.h"
+#include "gameobject.h"
 
 namespace cepp {
 

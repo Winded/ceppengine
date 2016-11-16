@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
     Angle ang;
     std::cout << ang << std::endl;
 
-    Matrix4 mat = Matrix4::trs(Vector3(1, 0, 0), Angle(0, 0, 90), Vector3::one);
+    Matrix4 mat = Matrix4::trs(Vector3(1, 0, 0), Vector3(0, 0, 90), Vector3::one);
     std::cout << mat << std::endl;
 
     std::cout << "Ref test begin" << std::endl;
