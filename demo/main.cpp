@@ -207,9 +207,6 @@ int main(int argc, char *argv[])
     Vector3 vec(1, 1, 1);
     std::cout << vec.length() << std::endl;
 
-    Angle ang;
-    std::cout << ang << std::endl;
-
     Matrix4 mat = Matrix4::trs(Vector3(1, 0, 0), Vector3(0, 0, 90), Vector3::one);
     std::cout << mat << std::endl;
 

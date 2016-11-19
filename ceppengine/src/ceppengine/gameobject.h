@@ -2,13 +2,14 @@
 
 #include <string>
 #include "object.h"
-#include "util/ref.h"
-#include "scene.h"
 #include "math/vector3.h"
+#include "math/matrix4.h"
+#include "util/ref.h"
+#include "components/component.h"
 
 namespace cepp {
 
-class Component;
+class Scene;
 
 /**
  * Game objects are objects in the game scene that have a 3-dimensional position, rotation and scale.
@@ -22,6 +23,7 @@ class GameObject : public Object
     public:
         GameObject();
         GameObject(const std::string &name);
+        ~GameObject();
 
         std::string name() const;
         void setName(const std::string &name);
@@ -40,11 +42,11 @@ class GameObject : public Object
 
         bool isActiveInHierarchy() const;
 
-        Vector3 position() const;
+        Vector3 position();
         void setPosition(const Vector3 &position);
-        Vector3 rotation() const;
+        Vector3 rotation();
         void setRotation(const Vector3 &rotation);
-        Vector3 scale() const;
+        Vector3 scale();
         void setScale(const Vector3 &scale);
 
         Vector3 localPosition() const;
@@ -54,21 +56,33 @@ class GameObject : public Object
         Vector3 localScale() const;
         void setLocalScale(const Vector3 &scale);
 
-        Matrix4 localToWorldMatrix() const;
-        Matrix4 worldToLocalMatrix() const;
+        Matrix4 localToWorldMatrix();
+        Matrix4 worldToLocalMatrix();
 
-        Vector3 forward() const;
-        Vector3 right() const;
-        Vector3 up() const;
+        Vector3 forward();
+        Vector3 right();
+        Vector3 up();
+
+        /**
+         * Get component attached to this game object with specified type name
+         */
+        Component *getComponent(const std::string &name) const;
+        /**
+         * Add a new component to this game object
+         */
+        void addComponent(Component *component);
 
     private:
         void invalidateTransformCache(bool position, bool rotation, bool scale, bool matrices);
 
+        void start();
+        void update(float deltaTime);
+
         std::string mName;
 
-        Ref<Scene> mScene;
+        Scene *mScene;
 
-        Ref<GameObject> mParent;
+        GameObject *mParent;
 
         std::vector<Ref<GameObject>> mChildren;
         std::vector<GameObject*> mIteratedChildren; // Different list for update loop iteration to allow removal and addition of children

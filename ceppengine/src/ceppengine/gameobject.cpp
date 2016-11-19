@@ -1,5 +1,4 @@
 #include "gameobject.h"
-#include "components/component.h"
 #include "math/matrix4.h"
 #include <algorithm>
 
@@ -11,7 +10,12 @@ GameObject::GameObject() : GameObject("GameObject")
 }
 
 GameObject::GameObject(const std::string &name) :
-    mName(name), mActive(true), mStartCalled(false), mChildrenChanged(false), mComponentsChanged(false)
+    mName(name), mScene(0), mParent(0), mActive(true), mStartCalled(false), mChildrenChanged(true), mComponentsChanged(true)
+{
+
+}
+
+GameObject::~GameObject()
 {
 
 }
@@ -105,7 +109,7 @@ bool GameObject::isActiveInHierarchy() const
         return true;
 }
 
-Vector3 GameObject::position() const
+Vector3 GameObject::position()
 {
     if(mCachePositionValid)
         return mCachePosition;
@@ -133,7 +137,7 @@ void GameObject::setPosition(const Vector3 &position)
     }
 }
 
-Vector3 GameObject::rotation() const
+Vector3 GameObject::rotation()
 {
     if(mCacheRotationValid)
         return mCacheRotation;
@@ -161,7 +165,7 @@ void GameObject::setRotation(const Vector3 &rotation)
     }
 }
 
-Vector3 GameObject::scale() const
+Vector3 GameObject::scale()
 {
     if(mCacheScaleValid)
         return mCacheScale;
@@ -222,7 +226,7 @@ void GameObject::setLocalScale(const Vector3 &scale)
     invalidateTransformCache(false, false, true, true);
 }
 
-Matrix4 GameObject::localToWorldMatrix() const
+Matrix4 GameObject::localToWorldMatrix()
 {
     if(mCacheLToWValid)
         return mCacheLToW;
@@ -242,7 +246,7 @@ Matrix4 GameObject::localToWorldMatrix() const
     return mCacheLToW;
 }
 
-Matrix4 GameObject::worldToLocalMatrix() const
+Matrix4 GameObject::worldToLocalMatrix()
 {
     if(mCacheWToLValid)
         return mCacheWToL;
@@ -253,25 +257,137 @@ Matrix4 GameObject::worldToLocalMatrix() const
     return mCacheWToL;
 }
 
-Vector3 GameObject::forward() const
+Vector3 GameObject::forward()
 {
     Matrix4 lToW = localToWorldMatrix();
     Matrix4 fM = Vector3::forward.toPositionMatrix();
     return (Vector3::fromPositionMatrix(lToW * fM) - position()).normalized();
 }
 
-Vector3 GameObject::right() const
+Vector3 GameObject::right()
 {
     Matrix4 lToW = localToWorldMatrix();
     Matrix4 fM = Vector3::right.toPositionMatrix();
     return (Vector3::fromPositionMatrix(lToW * fM) - position()).normalized();
 }
 
-Vector3 GameObject::up() const
+Vector3 GameObject::up()
 {
     Matrix4 lToW = localToWorldMatrix();
     Matrix4 fM = Vector3::up.toPositionMatrix();
     return (Vector3::fromPositionMatrix(lToW * fM) - position()).normalized();
+}
+
+Component *GameObject::getComponent(const std::string &name) const
+{
+    for(auto it = mComponents.begin(); it != mComponents.end(); ++it) {
+        if((*it)->typeName() == name) {
+            return *it;
+        }
+    }
+    return 0;
+}
+
+void GameObject::addComponent(Component *component)
+{
+    component->mGameObject = this;
+    mComponents.push_back(component);
+}
+
+void GameObject::invalidateTransformCache(bool position, bool rotation, bool scale, bool matrices)
+{
+    if(position)
+        mCachePositionValid = false;
+    if(rotation)
+        mCacheRotationValid = false;
+    if(scale)
+        mCacheScaleValid = false;
+
+    if(position || rotation || scale || matrices) {
+        mCacheLToWValid = false;
+        mCacheWToLValid = false;
+    }
+
+    for(auto it = mIteratedChildren.begin(); it != mIteratedChildren.end(); ++it) {
+        (*it)->invalidateTransformCache(true, true, true, true);
+    }
+}
+
+void GameObject::start()
+{
+    mStartCalled = true;
+
+    if(mChildrenChanged) {
+        mIteratedChildren.clear();
+        for(auto it = mChildren.begin(); it != mChildren.end(); ++it) {
+            mIteratedChildren.push_back(*it);
+        }
+        mChildrenChanged = false;
+    }
+
+    if(mComponentsChanged) {
+        mIteratedComponents.clear();
+        for(auto it = mComponents.begin(); it != mComponents.end(); ++it) {
+            mIteratedComponents.push_back(*it);
+        }
+        mComponentsChanged = false;
+    }
+
+    for(auto it = mIteratedComponents.begin(); it != mIteratedComponents.end(); ++it) {
+        if(!(*it)) continue;
+        if(!(*it)->mStartCalled) {
+            (*it)->start();
+            (*it)->mStartCalled = true;
+        }
+    }
+
+    for(auto it = mIteratedChildren.begin(); it != mIteratedChildren.end(); ++it) {
+        if(!(*it)) continue;
+        if(!(*it)->mStartCalled) {
+            (*it)->start();
+            (*it)->mStartCalled = true;
+        }
+    }
+}
+
+void GameObject::update(float deltaTime)
+{
+    if(mChildrenChanged) {
+        mIteratedChildren.clear();
+        for(auto it = mChildren.begin(); it != mChildren.end(); ++it) {
+            mIteratedChildren.push_back(*it);
+        }
+        mChildrenChanged = false;
+    }
+
+    if(mComponentsChanged) {
+        mIteratedComponents.clear();
+        for(auto it = mComponents.begin(); it != mComponents.end(); ++it) {
+            mIteratedComponents.push_back(*it);
+        }
+        mComponentsChanged = false;
+    }
+
+    if(mActive) {
+        // Update components
+        for(auto it = mIteratedComponents.begin(); it != mIteratedComponents.end(); ++it) {
+            if(!(*it)) continue;
+            if(!(*it)->mStartCalled) {
+                (*it)->start();
+                (*it)->mStartCalled = true;
+            }
+            (*it)->update(deltaTime);
+        }
+    }
+
+    for(auto it = mIteratedChildren.begin(); it != mIteratedChildren.end(); ++it) {
+        if(!(*it)) continue;
+        if(!(*it)->mStartCalled) {
+            (*it)->start();
+            (*it)->mStartCalled = true;
+        }
+        (*it)->update(deltaTime);
+    }
 }
 
 } // namespace cepp

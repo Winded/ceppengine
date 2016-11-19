@@ -66,7 +66,7 @@ Ref<Type> &Ref<Type>::operator =(const Ref<Type> &other)
             delete mValue;
         }
     }
-    std::cout << "shit" << std::endl;
+
     mValue = other.mValue;
     if(mValue != 0) {
         mValue->addReference();
