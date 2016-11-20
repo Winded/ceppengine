@@ -21,6 +21,20 @@ Mesh::Mesh(float *vertices, int verticesLength,
     mIndexLength = indexLength;
 }
 
+Mesh::Mesh(const Mesh &otherMesh)
+{
+    mVertexLength = otherMesh.mVertexLength;
+    mUVCoordinatesLength = otherMesh.mUVCoordinatesLength;
+    mIndexLength = otherMesh.mIndexLength;
+
+    mVertices = (float*)malloc(mVertexLength * sizeof(float));
+    memcpy(mVertices, otherMesh.mVertices, mVertexLength * sizeof(float));
+    mUVCoordinates = (float*)malloc(mUVCoordinatesLength * sizeof(float));
+    memcpy(mUVCoordinates, otherMesh.mUVCoordinates, mUVCoordinatesLength * sizeof(float));
+    mIndices = (int*)malloc(mIndexLength * sizeof(int));
+    memcpy(mIndices, otherMesh.mIndices, mIndexLength * sizeof(int));
+}
+
 Mesh::~Mesh()
 {
     if(mModuleHandle != -1) {

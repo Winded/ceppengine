@@ -28,7 +28,9 @@ SOURCES += \
     src/ceppengine/modules/windows/windowsinputmodule.cpp \
     src/ceppengine/assets/default.cpp \
     src/ceppengine/components/component.cpp \
-    src/ceppengine/components/rendering/camera.cpp
+    src/ceppengine/components/rendering/camera.cpp \
+    src/ceppengine/components/rendering/spriterenderer.cpp \
+    src/ceppengine/assets/sprite.cpp
 
 HEADERS += \
     src/ceppengine/math/lrand.h \
@@ -57,7 +59,9 @@ HEADERS += \
     src/ceppengine/modules/windows/windowsinputmodule.h \
     src/ceppengine/assets/default.h \
     src/ceppengine/components/component.h \
-    src/ceppengine/components/rendering/camera.h
+    src/ceppengine/components/rendering/camera.h \
+    src/ceppengine/components/rendering/spriterenderer.h \
+    src/ceppengine/assets/sprite.h
 
 
 

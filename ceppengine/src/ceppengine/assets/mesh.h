@@ -12,6 +12,7 @@ class Mesh : public Asset
     public:
         Mesh(float *vertices, int verticesLength, int *indices, int indexLength);
         Mesh(float *vertices, int verticesLength, float *uvCoords, int uvCoordsLength, int *indices, int indexLength);
+        Mesh(const Mesh &otherMesh);
         ~Mesh();
 
         /**

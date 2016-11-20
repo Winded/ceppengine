@@ -25,12 +25,17 @@ const AssetLoader *Engine::assetLoader() const
     return &mAssetLoader;
 }
 
+const DefaultAssets *Engine::defaultAssets() const
+{
+    return &mDefaultAssets;
+}
+
 Scene *Engine::scene() const
 {
     return mScene;
 }
 
-Module *Engine::getModule(std::string name) const
+Module *Engine::getModule(const std::string &name) const
 {
     for(auto it = mModules.begin(); it != mModules.end(); ++it) {
         if((*it)->name() == name)

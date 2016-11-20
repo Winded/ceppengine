@@ -1,6 +1,9 @@
 #pragma once
 
+#include "../util/ref.h"
 #include "shader.h"
+#include "texture.h"
+#include "mesh.h"
 
 namespace cepp {
 
@@ -12,6 +15,15 @@ class DefaultAssets
 {
     public:
         DefaultAssets();
+
+        Shader *basicShader() const;
+        Texture *whiteTexture() const;
+        Mesh *quadMesh() const;
+
+    private:
+        Ref<Shader> mBasicShader;
+        Ref<Texture> mWhiteTexture;
+        Ref<Mesh> mQuadMesh;
 };
 
 } // namespace cepp

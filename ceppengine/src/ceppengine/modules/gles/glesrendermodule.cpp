@@ -34,11 +34,11 @@ void GLESRenderer::setMesh(Mesh *mesh)
 
 void GLESRenderer::applySettings()
 {
-    Shader *shader = mMaterial ? mMaterial->shader() : /*DefaultAssets::basicShader()*/0;
+    Shader *shader = mMaterial ? mMaterial->shader() : Engine::instance()->defaultAssets()->basicShader();
     int shaderProgram = shader->load();
     glUseProgram(shaderProgram);
 
-    Texture *texture = mMaterial ? mMaterial->texture() : /*DefaultAssets::whiteTexture()*/0;
+    Texture *texture = mMaterial ? mMaterial->texture() : Engine::instance()->defaultAssets()->whiteTexture();
     glBindTexture(GL_TEXTURE_2D, texture->load());
 
     applyShaderParams(shaderProgram, module->mShaderParams);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "assets/assetloader.h"
+#include "assets/default.h"
 #include "util/ref.h"
 #include "modules/module.h"
 #include "modules/runtimemodule.h"
@@ -30,13 +31,17 @@ class Engine
          * Get asset loader.
          */
         const AssetLoader *assetLoader() const;
+        /**
+         * Get default assets
+         */
+        const DefaultAssets *defaultAssets() const;
 
         /**
          * Get currently loaded scene
          */
         Scene *scene() const;
 
-        Module *getModule(std::string name) const;
+        Module *getModule(const std::string &name) const;
         void addModule(Module *module);
 
         // Function shortcuts for generic module types
@@ -64,6 +69,7 @@ class Engine
         RenderModule *mCachedRenderModule;
 
         AssetLoader mAssetLoader;
+        DefaultAssets mDefaultAssets;
 
         Ref<Scene> mScene;
         Scene *mNewScene;
