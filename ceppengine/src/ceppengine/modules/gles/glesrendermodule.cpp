@@ -404,11 +404,21 @@ void GLESRenderModule::initialize()
 
 void GLESRenderModule::render()
 {
-    // TODO find camera, set shader params
-    mRenderer.clear(Color::red);
+    Camera *camera = Engine::instance()->scene()->mainCamera();
 
-    for(auto it = mHandlers.begin(); it != mHandlers.end(); ++it) {
-        (*it).callback((*it).object, (IRenderer*)(&mRenderer));
+    if(camera) {
+        mRenderer.clear(camera->backgroundColor());
+
+        float *viewMat = camera->worldToViewportMatrix().toArray();
+        setGlobalShaderParam("WorldToViewportMatrix", viewMat, 4 * 4);
+        delete viewMat;
+
+        for(auto it = mHandlers.begin(); it != mHandlers.end(); ++it) {
+            (*it).callback((*it).object, (IRenderer*)(&mRenderer));
+        }
+    }
+    else {
+        mRenderer.clear(Color::black);
     }
 
     eglSwapBuffers(mEGLDisplay, mEGLSurface);

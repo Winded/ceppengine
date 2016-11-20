@@ -3,9 +3,16 @@
 
 namespace cepp {
 
-Scene::Scene()
+Scene::Scene() : mMainCamera(0)
 {
+    mRootObject = new GameObject("Root");
+    mRootObject->mScene = this;
+}
 
+Camera *Scene::mainCamera() const
+{
+    // TODO find main camera
+    return mMainCamera;
 }
 
 void Scene::start()

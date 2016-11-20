@@ -27,7 +27,8 @@ SOURCES += \
     src/ceppengine/modules/gles/glesrendermodule.cpp \
     src/ceppengine/modules/windows/windowsinputmodule.cpp \
     src/ceppengine/assets/default.cpp \
-    src/ceppengine/components/component.cpp
+    src/ceppengine/components/component.cpp \
+    src/ceppengine/components/rendering/camera.cpp
 
 HEADERS += \
     src/ceppengine/math/lrand.h \
@@ -55,7 +56,8 @@ HEADERS += \
     src/ceppengine/modules/gles/glesrendermodule.h \
     src/ceppengine/modules/windows/windowsinputmodule.h \
     src/ceppengine/assets/default.h \
-    src/ceppengine/components/component.h
+    src/ceppengine/components/component.h \
+    src/ceppengine/components/rendering/camera.h
 
 
 
