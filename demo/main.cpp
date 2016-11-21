@@ -9,6 +9,7 @@
 #include <ceppengine/gameobject.h>
 #include <ceppengine/scene.h>
 #include <ceppengine/util/ref.h>
+#include <ceppengine/components/rendering/spriterenderer.h>
 
 using namespace cepp;
 
@@ -130,15 +131,6 @@ void testRefs() {
     }
 }
 
-Material *testMaterial = 0;
-
-void renderCallback(Object *object, IRenderer *renderer) {
-    renderer->setMesh(testMesh);
-    renderer->setMaterial(testMaterial);
-    renderer->applySettings();
-    renderer->draw();
-}
-
 void testRendering() {
     Matrix4 id = Matrix4::identity;
     float matIdentity[] = {
@@ -175,6 +167,12 @@ int main(int argc, char *argv[])
     engine.addModule(new GLESRenderModule());
 
     Scene *scene = new Scene();
+
+    GameObject *go = new GameObject("TestSprite");
+    SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
+    // TODO
+    go->setParent(scene->rootObject());
+
     engine.loadScene(scene);
 
     clock_t timer = clock();

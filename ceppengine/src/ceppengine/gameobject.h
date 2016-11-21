@@ -21,6 +21,8 @@ class Scene;
 class GameObject : public Object
 {
     public:
+        typedef void (*Callback)(GameObject*);
+
         GameObject();
         GameObject(const std::string &name);
         ~GameObject();
@@ -73,6 +75,9 @@ class GameObject : public Object
         void addComponent(Component *component);
 
     private:
+        std::vector<GameObject*> recursiveFindGameObjects(const std::string &name);
+        Component *recursiveFindComponent(const std::string &typeName);
+
         void invalidateTransformCache(bool position, bool rotation, bool scale, bool matrices);
 
         void start();

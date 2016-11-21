@@ -59,7 +59,7 @@ Matrix4 Camera::projectionMatrix() const
     return m;
 }
 
-Matrix4 Camera::worldToViewportMatrix() const
+Matrix4 Camera::worldToViewportMatrix()
 {
     // Check if our cached view matrix is valid. If not, recalculate
     Vector3 pos = gameObject()->position();
@@ -83,7 +83,7 @@ Matrix4 Camera::worldToViewportMatrix() const
     return mCacheViewMatrix;
 }
 
-Vector3 Camera::screenToWorldPosition(const Vector3 &pos) const
+Vector3 Camera::screenToWorldPosition(const Vector3 &pos)
 {
     Vector3 screen = Engine::instance()->runtimeModule()->screenResolution();
     Vector3 sPos = pos;
@@ -97,7 +97,7 @@ Vector3 Camera::screenToWorldPosition(const Vector3 &pos) const
     return Vector3::fromPositionMatrix(m);
 }
 
-Vector3 Camera::worldToScreenPosition(const Vector3 &pos) const
+Vector3 Camera::worldToScreenPosition(const Vector3 &pos)
 {
     Matrix4 screenMatrix = worldToViewportMatrix();
     Matrix4 m = screenMatrix * pos.toPositionMatrix();

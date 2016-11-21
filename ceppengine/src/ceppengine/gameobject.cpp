@@ -294,6 +294,33 @@ void GameObject::addComponent(Component *component)
     mComponents.push_back(component);
 }
 
+std::vector<GameObject *> GameObject::recursiveFindGameObjects(const std::string &name)
+{
+    std::vector<GameObject*> objs;
+    for(auto it = mIteratedChildren.begin(); it != mIteratedChildren.end(); ++it) {
+        if((*it)->name() == name)
+            objs.push_back(*it);
+        std::vector<GameObject*> chObjs = (*it)->recursiveFindGameObjects(name);
+        objs.insert(objs.end(), chObjs.begin(), chObjs.end());
+    }
+    return objs;
+}
+
+Component *GameObject::recursiveFindComponent(const std::string &typeName)
+{
+    Component *component = getComponent(typeName);
+    if(component)
+        return component;
+
+    for(auto it = mIteratedChildren.begin(); it != mIteratedChildren.end(); ++it) {
+        Component *c = (*it)->recursiveFindComponent(typeName);
+        if(c)
+            return c;
+    }
+
+    return 0;
+}
+
 void GameObject::invalidateTransformCache(bool position, bool rotation, bool scale, bool matrices)
 {
     if(position)

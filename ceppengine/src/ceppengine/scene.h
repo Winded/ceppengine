@@ -12,7 +12,17 @@ class Scene : public Object
     public:
         Scene();
 
-        Camera *mainCamera() const;
+        GameObject *rootObject() const;
+
+        Camera *mainCamera();
+
+        GameObject *findGameObjectByName(const std::string &name);
+        std::vector<GameObject*> findGameObjectsByName(const std::string &name);
+
+        /**
+         * Find the first component of given type in scene hierarchy.
+         */
+        Component *findComponent(const std::string &typeName);
 
     protected:
         void start();
@@ -20,6 +30,8 @@ class Scene : public Object
         void destroy();
 
     private:
+        void objectMatchIteration(GameObject *go);
+
         Ref<GameObject> mRootObject;
 
         Camera *mMainCamera;

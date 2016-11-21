@@ -32,16 +32,16 @@ class Camera : public Component
         /**
          * Calculate world to viewport matrix. This is basically projection matrix multiplied by world-to-local matrix.
          */
-        Matrix4 worldToViewportMatrix() const;
+        Matrix4 worldToViewportMatrix();
 
         /**
          * Convert screen point to world position
          */
-        Vector3 screenToWorldPosition(const Vector3 &pos) const;
+        Vector3 screenToWorldPosition(const Vector3 &pos);
         /**
          * Convert world position to screen point
          */
-        Vector3 worldToScreenPosition(const Vector3 &pos) const;
+        Vector3 worldToScreenPosition(const Vector3 &pos);
 
     private:
         float mOrthographicScale;
