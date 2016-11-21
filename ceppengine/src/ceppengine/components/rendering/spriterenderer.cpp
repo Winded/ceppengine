@@ -3,7 +3,7 @@
 
 namespace cepp {
 
-SpriteRenderer::SpriteRenderer()
+SpriteRenderer::SpriteRenderer() : mColor(Color::white)
 {
 
 }
@@ -11,6 +11,11 @@ SpriteRenderer::SpriteRenderer()
 SpriteRenderer::~SpriteRenderer()
 {
     Engine::instance()->renderModule()->removeHandler(this);
+}
+
+std::string SpriteRenderer::typeName() const
+{
+    return "SpriteRenderer";
 }
 
 Sprite *SpriteRenderer::sprite() const

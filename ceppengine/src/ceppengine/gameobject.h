@@ -72,7 +72,7 @@ class GameObject : public Object
         /**
          * Add a new component to this game object
          */
-        void addComponent(Component *component);
+        Component *addComponent(Component *component);
 
     private:
         std::vector<GameObject*> recursiveFindGameObjects(const std::string &name);

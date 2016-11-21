@@ -131,22 +131,6 @@ void testRefs() {
     }
 }
 
-void testRendering() {
-    Matrix4 id = Matrix4::identity;
-    float matIdentity[] = {
-        id.m11, id.m12, id.m13, id.m14,
-        id.m21, id.m22, id.m23, id.m24,
-        id.m31, id.m32, id.m33, id.m34,
-        id.m41, id.m42, id.m43, id.m44
-    };
-    float color[] = {1.f, 1.f, 1.f, 1.f};
-    Engine::instance()->renderModule()->setGlobalShaderParam("WorldToViewportMatrix", matIdentity, 4 * 4);
-    Engine::instance()->renderModule()->setGlobalShaderParam("LocalToWorldMatrix", matIdentity, 4 * 4);
-    Engine::instance()->renderModule()->setGlobalShaderParam("BaseColor", color, 4);
-
-    Engine::instance()->renderModule()->addHandler(Engine::instance()->scene(), renderCallback);
-}
-
 int main(int argc, char *argv[])
 {
     Vector3 vec(1, 1, 1);
@@ -155,9 +139,9 @@ int main(int argc, char *argv[])
     Matrix4 mat = Matrix4::trs(Vector3(1, 0, 0), Vector3(0, 0, 90), Vector3::one);
     std::cout << mat << std::endl;
 
-    std::cout << "Ref test begin" << std::endl;
-    testRefs();
-    std::cout << "Ref test complete" << std::endl;
+    //std::cout << "Ref test begin" << std::endl;
+    //testRefs();
+    //std::cout << "Ref test complete" << std::endl;
 
     Engine engine;
     auto runtimeMod = new WindowsRuntimeModule();
@@ -170,15 +154,19 @@ int main(int argc, char *argv[])
 
     GameObject *go = new GameObject("TestSprite");
     SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
-    // TODO
     go->setParent(scene->rootObject());
+    go->setPosition(Vector3::zero);
+
+    //GameObject *cameraObj = new GameObject("Camera");
+    //Camera *c = (Camera*)cameraObj->addComponent(new Camera());
+    //cameraObj->setParent(scene->rootObject());
+    //cameraObj->setPosition(Vector3(0, 0, -5.f));
 
     engine.loadScene(scene);
 
     clock_t timer = clock();
 
     engine.start();
-    testRendering();
     while(engine.isRunning()) {
         clock_t currentTime = clock();
         float deltaTime = (float)(currentTime - timer) / (float)CLOCKS_PER_SEC;

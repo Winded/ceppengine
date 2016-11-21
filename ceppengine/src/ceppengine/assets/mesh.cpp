@@ -27,12 +27,15 @@ Mesh::Mesh(const Mesh &otherMesh)
     mUVCoordinatesLength = otherMesh.mUVCoordinatesLength;
     mIndexLength = otherMesh.mIndexLength;
 
-    mVertices = (float*)malloc(mVertexLength * sizeof(float));
-    memcpy(mVertices, otherMesh.mVertices, mVertexLength * sizeof(float));
-    mUVCoordinates = (float*)malloc(mUVCoordinatesLength * sizeof(float));
-    memcpy(mUVCoordinates, otherMesh.mUVCoordinates, mUVCoordinatesLength * sizeof(float));
-    mIndices = (int*)malloc(mIndexLength * sizeof(int));
-    memcpy(mIndices, otherMesh.mIndices, mIndexLength * sizeof(int));
+    mVertices = new float[mVertexLength];
+    for(int i = 0; i < mVertexLength; i++)
+        mVertices[i] = otherMesh.mVertices[i];
+    mUVCoordinates = new float[mUVCoordinatesLength];
+    for(int i = 0; i < mUVCoordinatesLength; i++)
+        mUVCoordinates[i] = otherMesh.mUVCoordinates[i];
+    mIndices = new int[mIndexLength];
+    for(int i = 0; i < mIndexLength; i++)
+        mIndices[i] = otherMesh.mIndices[i];
 }
 
 Mesh::~Mesh()

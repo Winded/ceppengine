@@ -297,8 +297,9 @@ float *GLESRenderModule::getGlobalShaderParam(const std::string &name, int *size
 void GLESRenderModule::setGlobalShaderParam(const std::string &name, float *value, int size)
 {
     // Copy data first
-    float *data = (float*)malloc(size * sizeof(float));
-    memcpy(data, value, size * sizeof(float));
+    float *data = new float[size];
+    for(int i = 0; i < size; i++)
+        data[i] = value[i];
 
     auto it = std::find_if(mShaderParams.begin(), mShaderParams.end(), [name](const ShaderParameter &param) {
        return param.name == name;

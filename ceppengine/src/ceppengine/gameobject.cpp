@@ -68,7 +68,7 @@ void GameObject::setParent(GameObject *parent, bool maintainLocalTransform)
         mParent->mChildrenChanged = true;
     }
 
-    if(parent) {
+    if(!parent) {
         mParent = 0;
         return;
     }
@@ -288,10 +288,11 @@ Component *GameObject::getComponent(const std::string &name) const
     return 0;
 }
 
-void GameObject::addComponent(Component *component)
+Component *GameObject::addComponent(Component *component)
 {
     component->mGameObject = this;
     mComponents.push_back(component);
+    return component;
 }
 
 std::vector<GameObject *> GameObject::recursiveFindGameObjects(const std::string &name)

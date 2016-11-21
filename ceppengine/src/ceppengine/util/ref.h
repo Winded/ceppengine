@@ -119,14 +119,12 @@ Type *Ref<Type>::operator ->() const
 template<class Type>
 Ref<Type>::operator Type *()
 {
-    assert(mValue != 0);
     return mValue;
 }
 
 template<class Type>
 Ref<Type>::operator Type *() const
 {
-    assert(mValue != 0);
     return mValue;
 }
 

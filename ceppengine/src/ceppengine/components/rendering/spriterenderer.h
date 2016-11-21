@@ -19,6 +19,8 @@ class SpriteRenderer : public Component
         SpriteRenderer();
         ~SpriteRenderer();
 
+        virtual std::string typeName() const;
+
         Sprite *sprite() const;
         void setSprite(Sprite *sprite);
 
