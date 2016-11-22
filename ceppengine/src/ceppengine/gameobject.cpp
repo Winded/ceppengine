@@ -9,10 +9,21 @@ GameObject::GameObject() : GameObject("GameObject")
 
 }
 
-GameObject::GameObject(const std::string &name) :
-    mName(name), mScene(0), mParent(0), mActive(true), mStartCalled(false), mChildrenChanged(true), mComponentsChanged(true)
+GameObject::GameObject(const std::string &name)
 {
-
+    mName = name;
+    mScene = 0;
+    mParent = 0;
+    mActive = true;
+    mStartCalled = false;
+    mChildrenChanged = true;
+    mComponentsChanged = true;
+    mLocalScale = Vector3::one;
+    mCachePositionValid = false;
+    mCacheRotationValid = false;
+    mCacheScaleValid = false;
+    mCacheLToWValid = false;
+    mCacheWToLValid = false;
 }
 
 GameObject::~GameObject()

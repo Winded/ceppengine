@@ -108,7 +108,7 @@ void GLESRenderer::applyShaderParams(int program, const std::vector<ShaderParame
     }
 }
 
-GLESRenderModule::GLESRenderModule()
+GLESRenderModule::GLESRenderModule() : mNativeWindow(0), mNativeDisplay(0), mEGLDisplay(0), mEGLContext(0), mEGLSurface(0)
 {
     mRenderer.module = this;
 }

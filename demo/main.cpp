@@ -157,10 +157,10 @@ int main(int argc, char *argv[])
     go->setParent(scene->rootObject());
     go->setPosition(Vector3::zero);
 
-    //GameObject *cameraObj = new GameObject("Camera");
-    //Camera *c = (Camera*)cameraObj->addComponent(new Camera());
-    //cameraObj->setParent(scene->rootObject());
-    //cameraObj->setPosition(Vector3(0, 0, -5.f));
+    GameObject *cameraObj = new GameObject("Camera");
+    Camera *c = (Camera*)cameraObj->addComponent(new Camera());
+    cameraObj->setParent(scene->rootObject());
+    cameraObj->setPosition(Vector3(0, 0, -5.f));
 
     engine.loadScene(scene);
 
