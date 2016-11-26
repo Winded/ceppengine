@@ -116,7 +116,7 @@ Matrix4 Matrix4::invert() const
 
 float *Matrix4::toArray() const
 {
-    return new float[] {
+    return new float[16] {
         m11, m12, m13, m14,
         m21, m22, m23, m24,
         m31, m32, m33, m34,

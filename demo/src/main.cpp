@@ -10,6 +10,8 @@
 #include <ceppengine/scene.h>
 #include <ceppengine/util/ref.h>
 #include <ceppengine/components/rendering/spriterenderer.h>
+#include "components/rotator.h"
+#include "components/aimatcursor.h"
 
 using namespace cepp;
 
@@ -57,6 +59,7 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         POINT point;
         GetCursorPos(&point);
+        ScreenToClient(hWnd, &point);
         WindowsInputModule *module = (WindowsInputModule*)Engine::instance()->inputModule();
         module->updateMousePosition(point);
     }
@@ -156,9 +159,12 @@ int main(int argc, char *argv[])
     SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
     go->setParent(scene->rootObject());
     go->setPosition(Vector3::zero);
+    //go->addComponent(new Rotator());
+    go->addComponent(new AimAtCursor());
 
     GameObject *cameraObj = new GameObject("Camera");
     Camera *c = (Camera*)cameraObj->addComponent(new Camera());
+    c->setBackgroundColor(cepp::Color(100, 100, 100, 255));
     cameraObj->setParent(scene->rootObject());
     cameraObj->setPosition(Vector3(0, 0, -5.f));
 

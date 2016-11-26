@@ -30,18 +30,18 @@ DefaultAssets::DefaultAssets()
                     gl_FragColor = texture2D(Texture1, UV) * BaseColor;                                       \
                 }"
                 );
-    mWhiteTexture = new Texture(1, 1, new char[] {(char)255, (char)255, (char)255, (char)255});
-    mQuadMesh = new Mesh(new float[] {
+    mWhiteTexture = new Texture(1, 1, new char[4] {(char)255, (char)255, (char)255, (char)255});
+    mQuadMesh = new Mesh(new float[4 * 3] {
         -0.5f, 0.5f, 0,
         0.5f, 0.5f, 0,
         0.5f, -0.5f, 0,
         -0.5f, -0.5f, 0
-    }, 4 * 3, new float[] {
+    }, 4 * 3, new float[4 * 2] {
         0, 0,
         0, 1,
         1, 1,
         1, 0
-    }, 4 * 2, new int[] {
+    }, 4 * 2, new int[4 * 2] {
         0, 1, 3,
         1, 2, 3
     }, 6);

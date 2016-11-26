@@ -3,7 +3,10 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp
+SOURCES += \
+    src/main.cpp \
+    src/components/rotator.cpp \
+    src/components/aimatcursor.cpp
 
 unix|win32: LIBS += -L$$PWD/../lib/ -llibEGL -llibGLESv2
 
@@ -19,3 +22,7 @@ DEPENDPATH += $$PWD/../ceppengine/src
 
 msvc: LIBS += -luser32
 msvc: LIBS += -lgdi32
+
+HEADERS += \
+    src/components/rotator.h \
+    src/components/aimatcursor.h

@@ -46,14 +46,15 @@ void SpriteRenderer::render(IRenderer *renderer)
     renderer->setMaterial(mMaterial);
 
     float *lToWMat = gameObject()->localToWorldMatrix().toArray();
-    float *color = new float[] { (float)mColor.r, (float)mColor.g, (float)mColor.b, (float)mColor.a };
+    float *color = new float[4] { (float)mColor.r, (float)mColor.g, (float)mColor.b, (float)mColor.a };
     Engine::instance()->renderModule()->setGlobalShaderParam("LocalToWorldMatrix", lToWMat, 4 * 4);
     Engine::instance()->renderModule()->setGlobalShaderParam("BaseColor", color, 4);
-    delete lToWMat;
-    delete color;
 
     renderer->applySettings();
     renderer->draw();
+
+    delete lToWMat;
+    delete color;
 }
 
 void _render(Object *obj, IRenderer *renderer)

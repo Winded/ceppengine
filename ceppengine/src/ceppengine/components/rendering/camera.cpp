@@ -88,13 +88,15 @@ Vector3 Camera::screenToWorldPosition(const Vector3 &pos)
     Vector3 screen = Engine::instance()->runtimeModule()->screenResolution();
     Vector3 sPos = pos;
     sPos.x = (sPos.x / screen.x) * 2.f - 1.f;
-    sPos.y = (sPos.y / screen.y) * 2.f - 1.f;
+    sPos.y = -((sPos.y / screen.y) * 2.f - 1.f);
     sPos.z = 0;
 
     Matrix4 worldMatrix = worldToViewportMatrix().invert();
     Matrix4 m = worldMatrix * sPos.toPositionMatrix();
 
-    return Vector3::fromPositionMatrix(m);
+    Vector3 wPos = Vector3::fromPositionMatrix(m);
+    wPos.z = gameObject()->position().z;
+    return wPos;
 }
 
 Vector3 Camera::worldToScreenPosition(const Vector3 &pos)
@@ -105,7 +107,8 @@ Vector3 Camera::worldToScreenPosition(const Vector3 &pos)
     Vector3 screen = Engine::instance()->runtimeModule()->screenResolution();
     Vector3 sPos = Vector3::fromPositionMatrix(m);
     sPos.x = (sPos.x + 1.f) / 2.f * screen.x;
-    sPos.y = (sPos.y + 1.f) / 2.f * screen.y;
+    sPos.y = (1.f - sPos.y) / 2.f * screen.y;
+    sPos.z = 0;
     return sPos;
 }
 

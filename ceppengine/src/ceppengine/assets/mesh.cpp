@@ -23,6 +23,8 @@ Mesh::Mesh(float *vertices, int verticesLength,
 
 Mesh::Mesh(const Mesh &otherMesh)
 {
+    mModuleHandle = -1;
+
     mVertexLength = otherMesh.mVertexLength;
     mUVCoordinatesLength = otherMesh.mUVCoordinatesLength;
     mIndexLength = otherMesh.mIndexLength;
