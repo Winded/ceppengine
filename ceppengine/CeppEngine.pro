@@ -30,7 +30,8 @@ SOURCES += \
     src/ceppengine/components/component.cpp \
     src/ceppengine/components/rendering/camera.cpp \
     src/ceppengine/components/rendering/spriterenderer.cpp \
-    src/ceppengine/assets/sprite.cpp
+    src/ceppengine/assets/sprite.cpp \
+    src/ceppengine/assets/importers/assetimporter.cpp
 
 HEADERS += \
     src/ceppengine/math/lrand.h \
@@ -61,7 +62,8 @@ HEADERS += \
     src/ceppengine/components/component.h \
     src/ceppengine/components/rendering/camera.h \
     src/ceppengine/components/rendering/spriterenderer.h \
-    src/ceppengine/assets/sprite.h
+    src/ceppengine/assets/sprite.h \
+    src/ceppengine/assets/importers/assetimporter.h
 
 
 

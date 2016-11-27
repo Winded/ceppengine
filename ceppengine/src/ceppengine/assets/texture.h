@@ -13,6 +13,8 @@ class Texture : public Asset
         Texture(int width, int height, void *data);
         ~Texture();
 
+        virtual std::string typeName() const;
+
         /**
          * Load texture into the graphics module, if it is not loaded already
          */

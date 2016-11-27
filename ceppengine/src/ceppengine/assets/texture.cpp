@@ -18,6 +18,11 @@ Texture::~Texture()
     delete mData;
 }
 
+std::string Texture::typeName() const
+{
+    return "Texture";
+}
+
 int Texture::load()
 {
     if(mModuleHandle == -1)

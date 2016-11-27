@@ -9,8 +9,10 @@ namespace cepp {
  */
 class Asset : public Object
 {
-public:
-    Asset();
+    public:
+        Asset();
+
+        virtual std::string typeName() const = 0;
 };
 
 } // namespace cepp
