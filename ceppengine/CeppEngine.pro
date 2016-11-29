@@ -31,7 +31,9 @@ SOURCES += \
     src/ceppengine/components/rendering/camera.cpp \
     src/ceppengine/components/rendering/spriterenderer.cpp \
     src/ceppengine/assets/sprite.cpp \
-    src/ceppengine/assets/importers/assetimporter.cpp
+    src/ceppengine/assets/importers/assetimporter.cpp \
+    src/ceppengine/assets/importers/textureimporter.cpp \
+    src/ceppengine/util/thirdparty/lodepng.cpp
 
 HEADERS += \
     src/ceppengine/math/lrand.h \
@@ -63,13 +65,13 @@ HEADERS += \
     src/ceppengine/components/rendering/camera.h \
     src/ceppengine/components/rendering/spriterenderer.h \
     src/ceppengine/assets/sprite.h \
-    src/ceppengine/assets/importers/assetimporter.h
+    src/ceppengine/assets/importers/assetimporter.h \
+    src/ceppengine/assets/importers/textureimporter.h \
+    src/ceppengine/util/thirdparty/lodepng.h
 
 
 
 msvc: LIBS += -luser32
-
-#unix|win32: LIBS += -L$$PWD/../lib/ -llibEGL -llibGLESv2
 
 INCLUDEPATH += $$PWD/../include
 DEPENDPATH += $$PWD/../include

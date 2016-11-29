@@ -152,11 +152,21 @@ int main(int argc, char *argv[])
     engine.addModule(runtimeMod);
     engine.addModule(new WindowsInputModule());
     engine.addModule(new GLESRenderModule());
+    engine.assetLoader()->loadDefaultImporters();
+
+    Texture *tex = (Texture*)engine.assetLoader()->loadAsset("/tileset.png", "Texture");
+    Sprite *s = new Sprite();
+    s->setTexture(tex);
+    s->setTextureCoordinates(cepp::Vector3(0, 0));
+    s->setSize(cepp::Vector3(32, 32));
+    s->setPivot(cepp::Vector3(0.5f, 0.5f));
+    s->setPixelsPerUnit(32.f);
 
     Scene *scene = new Scene();
 
     GameObject *go = new GameObject("TestSprite");
     SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
+    r->setSprite(s);
     go->setParent(scene->rootObject());
     go->setPosition(Vector3::zero);
     //go->addComponent(new Rotator());

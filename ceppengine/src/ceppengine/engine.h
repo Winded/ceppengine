@@ -30,7 +30,7 @@ class Engine
         /**
          * Get asset loader.
          */
-        const AssetLoader *assetLoader() const;
+        AssetLoader *assetLoader();
         /**
          * Get default assets
          */

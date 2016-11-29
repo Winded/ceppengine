@@ -6,6 +6,11 @@ Sprite::Sprite() : mPivot(Vector3(0.5f, 0.5f)), mTextureCoordinates(Vector3::zer
 {
 }
 
+std::string Sprite::typeName() const
+{
+    return "Sprite";
+}
+
 Texture *Sprite::texture() const
 {
     return mTexture;

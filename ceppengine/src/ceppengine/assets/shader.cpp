@@ -21,6 +21,11 @@ Shader::~Shader()
     }
 }
 
+std::string Shader::typeName() const
+{
+    return "Shader";
+}
+
 int Shader::load()
 {
     if(mModuleHandle == -1)

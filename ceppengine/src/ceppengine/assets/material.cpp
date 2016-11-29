@@ -7,6 +7,11 @@ Material::Material()
 
 }
 
+std::string Material::typeName() const
+{
+    return "Material";
+}
+
 Shader *Material::shader() const
 {
     return mShader;

@@ -54,6 +54,11 @@ Mesh::~Mesh()
         delete mIndices;
 }
 
+std::string Mesh::typeName() const
+{
+    return "Mesh";
+}
+
 int Mesh::load()
 {
     if(mModuleHandle == -1)

@@ -13,6 +13,8 @@ class Sprite : public Asset
     public:
         Sprite();
 
+        virtual std::string typeName() const;
+
         Texture *texture() const;
         void setTexture(Texture *texture);
 

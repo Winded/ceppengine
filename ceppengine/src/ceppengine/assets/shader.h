@@ -11,6 +11,8 @@ class Shader : public Asset
         Shader(const std::string &vertexSource, const std::string &fragmentSource);
         ~Shader();
 
+        virtual std::string typeName() const;
+
         /**
          * Load the shader into the graphics module, if it is not loaded already
          */

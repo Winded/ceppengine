@@ -15,6 +15,8 @@ class Mesh : public Asset
         Mesh(const Mesh &otherMesh);
         ~Mesh();
 
+        virtual std::string typeName() const;
+
         /**
          * Load mesh into the graphics module, if it is not loaded already
          */

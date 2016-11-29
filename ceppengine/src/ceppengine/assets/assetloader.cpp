@@ -1,6 +1,7 @@
 #include "assetloader.h"
 #include <algorithm>
 #include <fstream>
+#include "importers/textureimporter.h"
 
 namespace cepp {
 
@@ -21,6 +22,7 @@ void AssetLoader::setLoadPath(const std::string &path)
 
 void AssetLoader::loadDefaultImporters()
 {
+    mImporters.push_back(new TextureImporter());
     // TODO
 }
 

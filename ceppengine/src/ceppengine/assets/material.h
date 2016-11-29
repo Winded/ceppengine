@@ -22,6 +22,8 @@ public:
 
     Material();
 
+    virtual std::string typeName() const;
+
     Shader *shader() const;
     void setShader(Shader *shader);
 

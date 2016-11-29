@@ -20,7 +20,7 @@ bool Engine::isRunning() const
     return mRunning;
 }
 
-const AssetLoader *Engine::assetLoader() const
+AssetLoader *Engine::assetLoader()
 {
     return &mAssetLoader;
 }
