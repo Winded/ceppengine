@@ -15,6 +15,11 @@ class Color
         Color(int pR, int pG, int pB);
         Color(int pR, int pG, int pB, int pA);
 
+        /**
+         * Create a float array of normalized color values (0 to 1)
+         */
+        float *toNormalizedArray() const;
+
         // Values
         uint8_t r, g, b, a;
 

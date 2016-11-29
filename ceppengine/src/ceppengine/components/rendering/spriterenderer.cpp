@@ -46,7 +46,7 @@ void SpriteRenderer::render(IRenderer *renderer)
     renderer->setMaterial(mMaterial);
 
     float *lToWMat = gameObject()->localToWorldMatrix().toArray();
-    float *color = new float[4] { (float)mColor.r, (float)mColor.g, (float)mColor.b, (float)mColor.a };
+    float *color = mColor.toNormalizedArray();
     Engine::instance()->renderModule()->setGlobalShaderParam("LocalToWorldMatrix", lToWMat, 4 * 4);
     Engine::instance()->renderModule()->setGlobalShaderParam("BaseColor", color, 4);
 
@@ -92,7 +92,7 @@ void SpriteRenderer::calculateVertices()
     verts[0] = tl.x; verts[1] = tl.y; verts[2] = tl.z;
     verts[3] = tr.x; verts[4] = tr.y; verts[5] = tr.z;
     verts[6] = br.x; verts[7] = br.y; verts[8] = br.z;
-    verts[9] = bl.x; verts[9] = bl.y; verts[9] = bl.z;
+    verts[9] = bl.x; verts[10] = bl.y; verts[11] = bl.z;
 }
 
 void SpriteRenderer::calculateTexCoords()

@@ -136,6 +136,9 @@ void testRefs() {
 
 int main(int argc, char *argv[])
 {
+    UNUSED_PARAM(argc);
+    UNUSED_PARAM(argv);
+
     Vector3 vec(1, 1, 1);
     std::cout << vec.length() << std::endl;
 
@@ -158,9 +161,9 @@ int main(int argc, char *argv[])
     Sprite *s = new Sprite();
     s->setTexture(tex);
     s->setTextureCoordinates(cepp::Vector3(0, 0));
-    s->setSize(cepp::Vector3(32, 32));
+    s->setSize(cepp::Vector3(16, 16));
     s->setPivot(cepp::Vector3(0.5f, 0.5f));
-    s->setPixelsPerUnit(32.f);
+    s->setPixelsPerUnit(16.f);
 
     Scene *scene = new Scene();
 
@@ -174,7 +177,7 @@ int main(int argc, char *argv[])
 
     GameObject *cameraObj = new GameObject("Camera");
     Camera *c = (Camera*)cameraObj->addComponent(new Camera());
-    c->setBackgroundColor(cepp::Color(100, 100, 100, 255));
+    c->setBackgroundColor(Color(100, 100, 100, 255));
     cameraObj->setParent(scene->rootObject());
     cameraObj->setPosition(Vector3(0, 0, -5.f));
 
