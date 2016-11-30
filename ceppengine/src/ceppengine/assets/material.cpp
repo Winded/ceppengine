@@ -37,13 +37,13 @@ const std::vector<ShaderParameter> &Material::shaderParameters() const
     return mShaderParameters;
 }
 
-float *Material::getShaderParam(std::string name) const
+float *Material::getShaderParam(std::string name, int *size) const
 {
     // TODO
     return 0;
 }
 
-void Material::setShaderParam(std::string name, float value[])
+void Material::setShaderParam(std::string name, float *value, int size)
 {
     // TODO
 }

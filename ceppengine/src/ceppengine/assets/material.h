@@ -31,8 +31,8 @@ public:
     void setTexture(Texture *texture);
 
     const std::vector<ShaderParameter> &shaderParameters() const;
-    float *getShaderParam(std::string name) const;
-    void setShaderParam(std::string name, float value[]);
+    float *getShaderParam(std::string name, int *size) const;
+    void setShaderParam(std::string name, float *value, int size);
     void deleteShaderParam(std::string name);
 
 private:

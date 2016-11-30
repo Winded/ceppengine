@@ -157,13 +157,14 @@ int main(int argc, char *argv[])
     engine.addModule(new GLESRenderModule());
     engine.assetLoader()->loadDefaultImporters();
 
-    Texture *tex = (Texture*)engine.assetLoader()->loadAsset("/tileset.png", "Texture");
-    Sprite *s = new Sprite();
-    s->setTexture(tex);
-    s->setTextureCoordinates(cepp::Vector3(0, 0));
-    s->setSize(cepp::Vector3(16, 16));
-    s->setPivot(cepp::Vector3(0.5f, 0.5f));
-    s->setPixelsPerUnit(16.f);
+    //Texture *tex = (Texture*)engine.assetLoader()->loadAsset("/tileset.png", "Texture");
+    //Sprite *s = new Sprite();
+    //s->setTexture(tex);
+    //s->setTextureCoordinates(cepp::Vector3(0, 0));
+    //s->setSize(cepp::Vector3(16, 16));
+    //s->setPivot(cepp::Vector3(0.5f, 0.5f));
+    //s->setPixelsPerUnit(16.f);
+    Sprite *s = (Sprite*)engine.assetLoader()->loadAsset("/test.sprite", "Sprite");
 
     Scene *scene = new Scene();
 

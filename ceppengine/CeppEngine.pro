@@ -33,7 +33,9 @@ SOURCES += \
     src/ceppengine/assets/sprite.cpp \
     src/ceppengine/assets/importers/assetimporter.cpp \
     src/ceppengine/assets/importers/textureimporter.cpp \
-    src/ceppengine/util/thirdparty/lodepng.cpp
+    src/ceppengine/util/thirdparty/lodepng.cpp \
+    src/ceppengine/util/thirdparty/jsoncpp.cpp \
+    src/ceppengine/assets/importers/jsonimporter.cpp
 
 HEADERS += \
     src/ceppengine/math/lrand.h \
@@ -67,7 +69,10 @@ HEADERS += \
     src/ceppengine/assets/sprite.h \
     src/ceppengine/assets/importers/assetimporter.h \
     src/ceppengine/assets/importers/textureimporter.h \
-    src/ceppengine/util/thirdparty/lodepng.h
+    src/ceppengine/util/thirdparty/lodepng.h \
+    src/ceppengine/util/thirdparty/json/json.h \
+    src/ceppengine/util/thirdparty/json/json-forwards.h \
+    src/ceppengine/assets/importers/jsonimporter.h
 
 
 

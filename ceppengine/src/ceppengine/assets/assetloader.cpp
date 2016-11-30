@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <fstream>
 #include "importers/textureimporter.h"
+#include "importers/jsonimporter.h"
 
 namespace cepp {
 
@@ -23,6 +24,7 @@ void AssetLoader::setLoadPath(const std::string &path)
 void AssetLoader::loadDefaultImporters()
 {
     mImporters.push_back(new TextureImporter());
+    mImporters.push_back(new JsonImporter());
     // TODO
 }
 
