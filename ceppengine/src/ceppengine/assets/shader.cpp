@@ -3,11 +3,6 @@
 
 namespace cepp {
 
-Shader::Shader(const std::string &source) : mModuleHandle(-1)
-{
-    // TODO
-}
-
 Shader::Shader(const std::string &vertexSource, const std::string &fragmentSource)
     : mModuleHandle(-1), mVertexSource(vertexSource), mFragmentSource(fragmentSource)
 {
