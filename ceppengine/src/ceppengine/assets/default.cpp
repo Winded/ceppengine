@@ -41,7 +41,7 @@ DefaultAssets::DefaultAssets()
         0, 1,
         1, 1,
         1, 0
-    }, 4 * 2, new int[4 * 2] {
+    }, 4 * 2, new int[2 * 3] {
         0, 1, 3,
         1, 2, 3
     }, 6);

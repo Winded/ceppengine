@@ -4,6 +4,7 @@
 #include "importers/textureimporter.h"
 #include "importers/jsonimporter.h"
 #include "importers/shaderimporter.h"
+#include "importers/meshimporter.h"
 
 namespace cepp {
 
@@ -27,6 +28,7 @@ void AssetLoader::loadDefaultImporters()
     mImporters.push_back(new TextureImporter());
     mImporters.push_back(new JsonImporter());
     mImporters.push_back(new ShaderImporter());
+    mImporters.push_back(new MeshImporter());
     // TODO
 }
 

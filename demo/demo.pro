@@ -9,6 +9,7 @@ SOURCES += \
     src/components/aimatcursor.cpp
 
 unix|win32: LIBS += -L$$PWD/../lib/ -llibEGL -llibGLESv2
+unix|win32: LIBS += -L$$PWD/../lib/ -lassimp
 
 INCLUDEPATH += $$PWD/../include
 DEPENDPATH += $$PWD/../include

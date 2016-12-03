@@ -36,7 +36,8 @@ SOURCES += \
     src/ceppengine/util/thirdparty/lodepng.cpp \
     src/ceppengine/util/thirdparty/jsoncpp.cpp \
     src/ceppengine/assets/importers/jsonimporter.cpp \
-    src/ceppengine/assets/importers/shaderimporter.cpp
+    src/ceppengine/assets/importers/shaderimporter.cpp \
+    src/ceppengine/assets/importers/meshimporter.cpp
 
 HEADERS += \
     src/ceppengine/math/lrand.h \
@@ -74,7 +75,8 @@ HEADERS += \
     src/ceppengine/util/thirdparty/json/json.h \
     src/ceppengine/util/thirdparty/json/json-forwards.h \
     src/ceppengine/assets/importers/jsonimporter.h \
-    src/ceppengine/assets/importers/shaderimporter.h
+    src/ceppengine/assets/importers/shaderimporter.h \
+    src/ceppengine/assets/importers/meshimporter.h
 
 
 
