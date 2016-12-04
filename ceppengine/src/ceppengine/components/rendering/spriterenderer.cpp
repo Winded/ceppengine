@@ -40,12 +40,12 @@ void SpriteRenderer::setColor(const Color &color)
 
 void SpriteRenderer::render(IRenderer *renderer)
 {
-    if(!gameObject()->isActive()) return;
+    if(!gameObject()->isActiveInHierarchy()) return;
 
     renderer->setMesh(mMesh);
     renderer->setMaterial(mMaterial);
 
-    float *lToWMat = gameObject()->localToWorldMatrix().toArray();
+    float *lToWMat = gameObject()->localToWorldMatrix().toColumnMajorArray();
     float *color = mColor.toNormalizedArray();
     Engine::instance()->renderModule()->setGlobalShaderParam("LocalToWorldMatrix", lToWMat, 4 * 4);
     Engine::instance()->renderModule()->setGlobalShaderParam("BaseColor", color, 4);
@@ -57,7 +57,7 @@ void SpriteRenderer::render(IRenderer *renderer)
     delete color;
 }
 
-void _render(Object *obj, IRenderer *renderer)
+void _renderSprite(Object *obj, IRenderer *renderer)
 {
     SpriteRenderer *spriteR = (SpriteRenderer*)obj;
     spriteR->render(renderer);
@@ -65,7 +65,7 @@ void _render(Object *obj, IRenderer *renderer)
 
 void SpriteRenderer::start()
 {
-    Engine::instance()->renderModule()->addHandler(this, _render);
+    Engine::instance()->renderModule()->addHandler(this, _renderSprite);
 
     mMaterial = new Material();
     mMaterial->setShader(Engine::instance()->defaultAssets()->basicShader());

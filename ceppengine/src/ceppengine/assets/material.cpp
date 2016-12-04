@@ -1,4 +1,5 @@
 #include "material.h"
+#include <algorithm>
 
 namespace cepp {
 
@@ -34,23 +35,58 @@ void Material::setTexture(Texture *texture)
 
 const std::vector<ShaderParameter> &Material::shaderParameters() const
 {
-    return mShaderParameters;
+    return mShaderParams;
 }
 
 float *Material::getShaderParam(std::string name, int *size) const
 {
-    // TODO
+    auto it = std::find_if(mShaderParams.begin(), mShaderParams.end(), [name](const ShaderParameter &param) {
+       return param.name == name;
+    });
+
+    if(it != mShaderParams.end()) {
+        *size = (*it).size;
+        return (*it).data;
+    }
+
     return 0;
 }
 
 void Material::setShaderParam(std::string name, float *value, int size)
 {
-    // TODO
+    // Copy data first
+    float *data = new float[size];
+    for(int i = 0; i < size; i++)
+        data[i] = value[i];
+
+    auto it = std::find_if(mShaderParams.begin(), mShaderParams.end(), [name](const ShaderParameter &param) {
+       return param.name == name;
+    });
+
+    if(it != mShaderParams.end()) {
+        delete (*it).data;
+        (*it).data = data;
+        (*it).size = size;
+    }
+    else {
+        ShaderParameter param;
+        param.data = data;
+        param.size = size;
+        param.name = name;
+        mShaderParams.push_back(param);
+    }
 }
 
 void Material::deleteShaderParam(std::string name)
 {
-    // TODO
+    auto it = std::find_if(mShaderParams.begin(), mShaderParams.end(), [name](const ShaderParameter &param) {
+       return param.name == name;
+    });
+
+    if(it != mShaderParams.end()) {
+        delete (*it).data;
+        it = mShaderParams.erase(it);
+    }
 }
 
 } // namespace cepp

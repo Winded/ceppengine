@@ -32,14 +32,14 @@ std::vector<Asset *> MeshImporter::import(std::istream &stream) const
     stream.read((char*)data.c_str(), fileSize);
 
     Assimp::Importer importer;
-    aiScene *scene = importer.ReadFileFromMemory(data.c_str(), data.size(), aiProcess_Triangulate | aiProcess_TransformUVCoords);
+    const aiScene *scene = importer.ReadFileFromMemory(data.c_str(), data.size(), aiProcess_Triangulate | aiProcess_TransformUVCoords);
 
     if(!scene)
         return assets;
 
     for(int i = 0; i < scene->mNumMeshes; i++) {
         aiMesh *aMesh = scene->mMeshes[i];
-        float verts[aMesh->mNumVertices * 3];
+        float *verts = new float[aMesh->mNumVertices * 3];
         int ii = 0;
         while(ii < aMesh->mNumVertices * 3) {
             aiVector3D vec = aMesh->mVertices[ii];
@@ -48,7 +48,7 @@ std::vector<Asset *> MeshImporter::import(std::istream &stream) const
             verts[ii + 2] = vec.z;
             ii += 3;
         }
-        unsigned int indices[aMesh->mNumFaces];
+        int *indices = new int[aMesh->mNumFaces];
         ii = 0;
         while(ii < aMesh->mNumFaces) {
             aiFace face = aMesh->mFaces[ii];
@@ -61,12 +61,12 @@ std::vector<Asset *> MeshImporter::import(std::istream &stream) const
 
         Mesh *mesh = 0;
         if(aMesh->HasTextureCoords(0)) {
-            float texCoords[aMesh->mNumVertices * 2];
+            float *texCoords = new float[aMesh->mNumVertices * 2];
             ii = 0;
             while(ii < aMesh->mNumVertices * 2) {
-                aiVector3D texC = aMesh->mTextureCoords[ii];
-                texCoords[ii] = texC.x;
-                texCoords[ii + 1] = texC.y;
+                aiVector3D *texC = aMesh->mTextureCoords[ii];
+                texCoords[ii] = texC->x;
+                texCoords[ii + 1] = texC->y;
                 ii += 2;
             }
             mesh = new Mesh(verts, aMesh->mNumVertices * 3, texCoords, aMesh->mNumVertices * 2, indices, aMesh->mNumFaces);

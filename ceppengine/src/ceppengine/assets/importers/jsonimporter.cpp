@@ -60,7 +60,7 @@ Asset *JsonImporter::createAsset(const Json::Value &jObj) const
             Json::Value param = params.get(i, Json::Value());
             if(!param.isObject()) continue;
             std::string name = param.get("name", "Undefined").asString();
-            Json::Value value = params.get("value", Json::Value());
+            Json::Value value = param.get("value", Json::Value());
             if(!value.isArray()) continue;
             float *fValue = new float[value.size()];
             for(int ii = 0; ii < value.size(); ii++)

@@ -39,7 +39,7 @@ private:
     Ref<Shader> mShader;
     Ref<Texture> mTexture;
 
-    std::vector<ShaderParameter> mShaderParameters;
+    std::vector<ShaderParameter> mShaderParams;
 };
 
 } // namespace cepp

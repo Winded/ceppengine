@@ -410,7 +410,7 @@ void GLESRenderModule::render()
     if(camera) {
         mRenderer.clear(camera->backgroundColor());
 
-        float *viewMat = camera->worldToViewportMatrix().toArray();
+        float *viewMat = camera->worldToViewportMatrix().toColumnMajorArray();
         setGlobalShaderParam("WorldToViewportMatrix", viewMat, 4 * 4);
         delete viewMat;
 

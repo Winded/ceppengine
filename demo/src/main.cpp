@@ -10,6 +10,7 @@
 #include <ceppengine/scene.h>
 #include <ceppengine/util/ref.h>
 #include <ceppengine/components/rendering/spriterenderer.h>
+#include <ceppengine/components/rendering/meshrenderer.h>
 #include "components/rotator.h"
 #include "components/aimatcursor.h"
 
@@ -165,6 +166,8 @@ int main(int argc, char *argv[])
     //s->setPivot(cepp::Vector3(0.5f, 0.5f));
     //s->setPixelsPerUnit(16.f);
     Sprite *s = (Sprite*)engine.assetLoader()->loadAsset("/test.sprite", "Sprite");
+    Material *material = (Material*)engine.assetLoader()->loadAsset("/red.material", "Material");
+    Mesh *mesh = (Mesh*)engine.assetLoader()->loadAsset("/box.obj", "Mesh");
 
     Scene *scene = new Scene();
 
@@ -172,9 +175,18 @@ int main(int argc, char *argv[])
     SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
     r->setSprite(s);
     go->setParent(scene->rootObject());
-    go->setPosition(Vector3::zero);
+    go->setPosition(Vector3(0, 0, 0));
     //go->addComponent(new Rotator());
     go->addComponent(new AimAtCursor());
+
+    GameObject *meshGo = new GameObject("TestMesh");
+    MeshRenderer *mr = (MeshRenderer*)meshGo->addComponent(new MeshRenderer());
+    mr->setMesh(mesh);
+    mr->setMaterial(material);
+    meshGo->setParent(scene->rootObject());
+    meshGo->setPosition(Vector3(1, 0, 0));
+    meshGo->addComponent(new Rotator());
+    //meshGo->addComponent(new AimAtCursor());
 
     GameObject *cameraObj = new GameObject("Camera");
     Camera *c = (Camera*)cameraObj->addComponent(new Camera());

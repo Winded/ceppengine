@@ -25,6 +25,6 @@ void AimAtCursor::update(float deltaTime)
     cursorWorld.z = gameObject()->position().z;
     cepp::Vector3 dir = (cursorWorld - gameObject()->position()).normalized();
     float angle = cepp::Math::atan2(dir.y, dir.x) * cepp::Math::rad2deg;
-    cepp::Vector3 ang(0, 0, -angle);
+    cepp::Vector3 ang(0, 0, angle);
     gameObject()->setRotation(ang);
 }
