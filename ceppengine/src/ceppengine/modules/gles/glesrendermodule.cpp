@@ -38,12 +38,21 @@ void GLESRenderer::applySettings()
     int shaderProgram = shader->load();
     glUseProgram(shaderProgram);
 
+    GLenum err = glGetError();
+    assert(err == GL_FALSE);
+
     Texture *texture = mMaterial ? mMaterial->texture() : Engine::instance()->defaultAssets()->whiteTexture();
     glBindTexture(GL_TEXTURE_2D, texture->load());
+
+    err = glGetError();
+    assert(err == GL_FALSE);
 
     applyShaderParams(shaderProgram, module->mShaderParams);
     if(mMaterial)
         applyShaderParams(shaderProgram, mMaterial->shaderParameters());
+
+    err = glGetError();
+    assert(err == GL_FALSE);
 }
 
 void GLESRenderer::draw()
@@ -57,11 +66,27 @@ void GLESRenderer::draw()
     });
     assert(mIt != module->mModels.end());
 
-    glBindBuffer(GL_ARRAY_BUFFER, (*mIt).VBO);
+//    printf("\nElement\n");
+//    for(int i = 0; i < mMesh->elementBufferLength(); i++)
+//        printf("%i, ", mMesh->elementBuffer()[i]);
+//    printf("\nVertex\n");
+//    for(int i = 0; i < mMesh->vertexBufferLength(); i++)
+//        printf("%f, ", mMesh->vertexBuffer()[i]);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*mIt).EBO);
-    glDrawElements(GL_TRIANGLES, mMesh->indicesLength(), GL_UNSIGNED_INT, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, (*mIt).VBO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * sizeof(float), (GLvoid*)0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+    glDrawElements(GL_TRIANGLE_STRIP, mMesh->elementBufferLength(), GL_UNSIGNED_INT, 0);
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    GLenum err = glGetError();
+    assert(err == GL_FALSE);
 }
 
 void GLESRenderer::clear(Color color)
@@ -72,6 +97,9 @@ void GLESRenderer::clear(Color color)
     float a = (float)color.a / 255.f;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(r, g, b, a);
+
+    GLenum err = glGetError();
+    assert(err == GL_FALSE);
 }
 
 void GLESRenderer::applyShaderParams(int program, const std::vector<ShaderParameter> &params)
@@ -183,20 +211,20 @@ void GLESRenderModule::deleteShader(int handle)
 
 int GLESRenderModule::createModel(Mesh *mesh)
 {
-    int bufLength = 0;
-    float *buffer = combineArraysToBuffer(mesh->vertices(), mesh->verticesLength(), mesh->uvCoordinates(), mesh->uvCoordinatesLength(), &bufLength);
-    int *elements = mesh->indices();
-    int elementsLength = mesh->indicesLength();
+    float *vBuf = mesh->vertexBuffer();
+    int vBufLength = mesh->vertexBufferLength();
+    int *eBuf = mesh->elementBuffer();
+    int eBufLength = mesh->elementBufferLength();
 
     GLuint vbo, ebo;
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ebo);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, bufLength * sizeof(float), buffer, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vBufLength * sizeof(float), vBuf, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementsLength * sizeof(int), elements, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, eBufLength * sizeof(int), eBuf, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * sizeof(float), (GLvoid*)0);
     glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
@@ -208,6 +236,9 @@ int GLESRenderModule::createModel(Mesh *mesh)
 
     mModels.push_back(GLESModel(vbo, ebo));
 
+    GLenum err = glGetError();
+    assert(err == GL_FALSE);
+
     return vbo;
 }
 
@@ -217,20 +248,23 @@ void GLESRenderModule::updateModel(int handle, Mesh *mesh)
        return model.VBO == handle;
     });
     if(it != mModels.end()) {
-        int bufLength = 0;
-        float *buffer = combineArraysToBuffer(mesh->vertices(), mesh->verticesLength(), mesh->uvCoordinates(), mesh->uvCoordinatesLength(), &bufLength);
-        int *elements = mesh->indices();
-        int elementsLength = mesh->indicesLength();
+        float *vBuf = mesh->vertexBuffer();
+        int vBufLength = mesh->vertexBufferLength();
+        int *eBuf = mesh->elementBuffer();
+        int eBufLength = mesh->elementBufferLength();
         GLuint vbo = (*it).VBO;
         GLuint ebo = (*it).EBO;
 
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, bufLength * sizeof(float), buffer, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vBufLength * sizeof(float), vBuf, GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementsLength * sizeof(int), elements, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, eBufLength * sizeof(int), eBuf, GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        GLenum err = glGetError();
+        assert(err == GL_FALSE);
     }
 }
 
@@ -423,39 +457,6 @@ void GLESRenderModule::render()
     }
 
     eglSwapBuffers(mEGLDisplay, mEGLSurface);
-}
-
-float *GLESRenderModule::combineArraysToBuffer(float *vertices, int vertexLength, float *uvCoords, int uvCoordsLength, int *length)
-{
-    int len = vertexLength + uvCoordsLength;
-    float *buf = new float[len];
-
-    int idx = 0;
-    int vIdx = 0;
-    int uIdx = 0;
-    while(true) {
-        if(idx > len - 5)
-            break;
-
-        buf[idx] = vertices[vIdx];
-        buf[idx + 1] = vertices[vIdx + 1];
-        buf[idx + 2] = vertices[vIdx + 2];
-        if(uvCoords && uIdx <= uvCoordsLength - 2) {
-            buf[idx + 3] = uvCoords[uIdx];
-            buf[idx + 4] = uvCoords[uIdx + 1];
-        }
-        else {
-            buf[idx + 3] = 0;
-            buf[idx + 4] = 0;
-        }
-
-        idx += 5;
-        vIdx += 3;
-        uIdx += 2;
-    }
-
-    *length = len;
-    return buf;
 }
 
 } // namespace cepp

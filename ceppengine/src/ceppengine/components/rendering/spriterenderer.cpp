@@ -81,7 +81,7 @@ void SpriteRenderer::calculateVertices()
 {
     if(!mSprite) return;
 
-    float *verts = mMesh->vertices();
+    float *vBuf = mMesh->vertexBuffer();
 
     Vector3 spriteSize = Vector3(mSprite->size().x, mSprite->size().y, 0) / mSprite->pixelsPerUnit();
     Vector3 tl = spriteSize * Vector3(-mSprite->pivot().x, mSprite->pivot().y, 0);
@@ -89,17 +89,17 @@ void SpriteRenderer::calculateVertices()
     Vector3 br = spriteSize * Vector3(1 - mSprite->pivot().x, mSprite->pivot().y - 1, 0);
     Vector3 bl = spriteSize * Vector3(-mSprite->pivot().x, mSprite->pivot().y - 1, 0);
 
-    verts[0] = tl.x; verts[1] = tl.y; verts[2] = tl.z;
-    verts[3] = tr.x; verts[4] = tr.y; verts[5] = tr.z;
-    verts[6] = br.x; verts[7] = br.y; verts[8] = br.z;
-    verts[9] = bl.x; verts[10] = bl.y; verts[11] = bl.z;
+    vBuf[0] = tl.x; vBuf[1] = tl.y; vBuf[2] = tl.z;
+    vBuf[5] = tr.x; vBuf[6] = tr.y; vBuf[7] = tr.z;
+    vBuf[10] = br.x; vBuf[11] = br.y; vBuf[12] = br.z;
+    vBuf[15] = bl.x; vBuf[16] = bl.y; vBuf[17] = bl.z;
 }
 
 void SpriteRenderer::calculateTexCoords()
 {
     if(!mSprite || !mSprite->texture()) return;
 
-    float *texCoords = mMesh->uvCoordinates();
+    float *vBuf = mMesh->vertexBuffer();
 
     Vector3 textureSize = Vector3(mSprite->texture()->width(), mSprite->texture()->height(), 0);
     Vector3 tl = Vector3(mSprite->textureCoordinates().x, mSprite->textureCoordinates().y, 0) / textureSize;
@@ -107,10 +107,10 @@ void SpriteRenderer::calculateTexCoords()
     Vector3 br = Vector3(mSprite->textureCoordinates().x + mSprite->size().x, mSprite->textureCoordinates().y + mSprite->size().y, 0) / textureSize;
     Vector3 bl = Vector3(mSprite->textureCoordinates().x, mSprite->textureCoordinates().y + mSprite->size().y, 0) / textureSize;
 
-    texCoords[0] = tl.x; texCoords[1] = tl.y;
-    texCoords[2] = tr.x; texCoords[3] = tr.y;
-    texCoords[4] = br.x; texCoords[5] = br.y;
-    texCoords[6] = bl.x; texCoords[7] = bl.y;
+    vBuf[3] = tl.x; vBuf[4] = tl.y;
+    vBuf[8] = tr.x; vBuf[9] = tr.y;
+    vBuf[13] = br.x; vBuf[14] = br.y;
+    vBuf[18] = bl.x; vBuf[19] = bl.y;
 }
 
 } // namespace cepp

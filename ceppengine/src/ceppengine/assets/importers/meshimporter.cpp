@@ -40,39 +40,33 @@ std::vector<Asset *> MeshImporter::import(std::istream &stream) const
     for(int i = 0; i < scene->mNumMeshes; i++) {
         aiMesh *aMesh = scene->mMeshes[i];
         float *verts = new float[aMesh->mNumVertices * 3];
-        int ii = 0;
-        while(ii < aMesh->mNumVertices * 3) {
+        for(int ii = 0; ii < aMesh->mNumVertices; ii++) {
             aiVector3D vec = aMesh->mVertices[ii];
-            verts[ii] = vec.x;
-            verts[ii + 1] = vec.y;
-            verts[ii + 2] = vec.z;
-            ii += 3;
+            verts[ii * 3 + 0] = vec.x;
+            verts[ii * 3 + 1] = vec.y;
+            verts[ii * 3 + 2] = vec.z;
         }
-        int *indices = new int[aMesh->mNumFaces];
-        ii = 0;
-        while(ii < aMesh->mNumFaces) {
+        int *indices = new int[aMesh->mNumFaces * 3];
+        for(int ii = 0; ii < aMesh->mNumFaces; ii++) {
             aiFace face = aMesh->mFaces[ii];
             assert(face.mNumIndices == 3);
-            indices[ii] = face.mIndices[0];
-            indices[ii + 1] = face.mIndices[1];
-            indices[ii + 2] = face.mIndices[2];
-            ii++;
+            indices[ii * 3 + 0] = face.mIndices[0];
+            indices[ii * 3 + 1] = face.mIndices[1];
+            indices[ii * 3 + 2] = face.mIndices[2];
         }
 
         Mesh *mesh = 0;
         if(aMesh->HasTextureCoords(0)) {
-            float *texCoords = new float[aMesh->mNumVertices * 2];
-            ii = 0;
-            while(ii < aMesh->mNumVertices * 2) {
+            float *texCoords = new float[aMesh->mNumVertices / 3 * 2];
+            for(int ii = 0; ii < aMesh->mNumVertices / 3 * 2; ii++) {
                 aiVector3D *texC = aMesh->mTextureCoords[ii];
-                texCoords[ii] = texC->x;
-                texCoords[ii + 1] = texC->y;
-                ii += 2;
+                texCoords[ii * 2 + 0] = texC->x;
+                texCoords[ii * 2 + 1] = texC->y;
             }
-            mesh = new Mesh(verts, aMesh->mNumVertices * 3, texCoords, aMesh->mNumVertices * 2, indices, aMesh->mNumFaces);
+            mesh = new Mesh(verts, aMesh->mNumVertices * 3, texCoords, aMesh->mNumVertices * 2, indices, aMesh->mNumFaces * 3);
         }
         else {
-            mesh = new Mesh(verts, aMesh->mNumVertices * 3, indices, aMesh->mNumFaces);
+            mesh = new Mesh(verts, aMesh->mNumVertices * 3, indices, aMesh->mNumFaces * 3);
         }
 
         assets.push_back(mesh);

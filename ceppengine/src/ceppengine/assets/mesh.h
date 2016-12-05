@@ -1,6 +1,7 @@
 #pragma once
 
 #include "asset.h"
+#include "../math/vector3.h"
 
 namespace cepp {
 
@@ -10,8 +11,8 @@ namespace cepp {
 class Mesh : public Asset
 {
     public:
-        Mesh(float *vertices, int verticesLength, int *indices, int indexLength);
-        Mesh(float *vertices, int verticesLength, float *uvCoords, int uvCoordsLength, int *indices, int indexLength);
+        Mesh(float *vertices, int verticesLength, int *elementBuffer, int indexLength);
+        Mesh(float *vertices, int verticesLength, float *uvCoords, int uvCoordsLength, int *elementBuffer, int indexLength);
         Mesh(const Mesh &otherMesh);
         ~Mesh();
 
@@ -22,21 +23,21 @@ class Mesh : public Asset
          */
         int load();
 
-        float *vertices() const;
-        int verticesLength() const;
+        float *vertexBuffer() const;
+        int vertexBufferLength() const;
 
-        float *uvCoordinates() const;
-        int uvCoordinatesLength() const;
+        int *elementBuffer() const;
+        int elementBufferLength() const;
 
-        int *indices() const;
-        int indicesLength() const;
+        Vector3 getVertex(int idx) const;
+        Vector3 getUV(int idx) const;
 
     private:
         int mModuleHandle;
 
-        float *mVertices, *mUVCoordinates;
-        int *mIndices;
-        int mVertexLength, mUVCoordinatesLength, mIndexLength;
+        float *mVertexBuffer;
+        int *mElementBuffer;
+        int mElementBufferLength, mVertexBufferLength;
 };
 
 } // namespace cepp

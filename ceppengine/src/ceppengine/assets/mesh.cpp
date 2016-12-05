@@ -13,31 +13,52 @@ Mesh::Mesh(float *vertices, int verticesLength,
            int *indices, int indexLength) :
     mModuleHandle(-1)
 {
-    mVertices = vertices;
-    mVertexLength = verticesLength;
-    mUVCoordinates = uvCoords;
-    mUVCoordinatesLength = uvCoordsLength;
-    mIndices = indices;
-    mIndexLength = indexLength;
+    mElementBufferLength = indexLength;
+    mElementBuffer = new int[mElementBufferLength];
+    for(int i = 0; i < mElementBufferLength; i++)
+        mElementBuffer[i] = indices[i];
+
+    mVertexBufferLength = verticesLength / 3 * 5;
+    mVertexBuffer = new float[mVertexBufferLength];
+
+    int idx = 0;
+    int vIdx = 0;
+    int uIdx = 0;
+    while(true) {
+        if(idx > mVertexBufferLength - 5 || vIdx > verticesLength - 3)
+            break;
+
+        mVertexBuffer[idx] = vertices[vIdx];
+        mVertexBuffer[idx + 1] = vertices[vIdx + 1];
+        mVertexBuffer[idx + 2] = vertices[vIdx + 2];
+        if(uvCoords && uIdx <= uvCoordsLength - 2) {
+            mVertexBuffer[idx + 3] = uvCoords[uIdx];
+            mVertexBuffer[idx + 4] = uvCoords[uIdx + 1];
+        }
+        else {
+            mVertexBuffer[idx + 3] = 0;
+            mVertexBuffer[idx + 4] = 0;
+        }
+
+        idx += 5;
+        vIdx += 3;
+        uIdx += 2;
+    }
 }
 
 Mesh::Mesh(const Mesh &otherMesh)
 {
     mModuleHandle = -1;
 
-    mVertexLength = otherMesh.mVertexLength;
-    mUVCoordinatesLength = otherMesh.mUVCoordinatesLength;
-    mIndexLength = otherMesh.mIndexLength;
+    mVertexBufferLength = otherMesh.mVertexBufferLength;
+    mElementBufferLength = otherMesh.mElementBufferLength;
 
-    mVertices = new float[mVertexLength];
-    for(int i = 0; i < mVertexLength; i++)
-        mVertices[i] = otherMesh.mVertices[i];
-    mUVCoordinates = new float[mUVCoordinatesLength];
-    for(int i = 0; i < mUVCoordinatesLength; i++)
-        mUVCoordinates[i] = otherMesh.mUVCoordinates[i];
-    mIndices = new int[mIndexLength];
-    for(int i = 0; i < mIndexLength; i++)
-        mIndices[i] = otherMesh.mIndices[i];
+    mVertexBuffer = new float[mVertexBufferLength];
+    for(int i = 0; i < mVertexBufferLength; i++)
+        mVertexBuffer[i] = otherMesh.mVertexBuffer[i];
+    mElementBuffer = new int[mElementBufferLength];
+    for(int i = 0; i < mElementBufferLength; i++)
+        mElementBuffer[i] = otherMesh.mElementBuffer[i];
 }
 
 Mesh::~Mesh()
@@ -46,12 +67,10 @@ Mesh::~Mesh()
         Engine::instance()->renderModule()->deleteModel(mModuleHandle);
         mModuleHandle = -1;
     }
-    if(mVertices)
-        delete mVertices;
-    if(mUVCoordinates)
-        delete mUVCoordinates;
-    if(mIndices)
-        delete mIndices;
+    if(mElementBuffer)
+        delete mElementBuffer;
+    if(mVertexBuffer)
+        delete mVertexBuffer;
 }
 
 std::string Mesh::typeName() const
@@ -66,34 +85,45 @@ int Mesh::load()
     return mModuleHandle;
 }
 
-float *Mesh::vertices() const
+float *Mesh::vertexBuffer() const
 {
-    return mVertices;
+    return mVertexBuffer;
 }
 
-int Mesh::verticesLength() const
+int Mesh::vertexBufferLength() const
 {
-    return mVertexLength;
+    return mVertexBufferLength;
 }
 
-float *Mesh::uvCoordinates() const
+int *Mesh::elementBuffer() const
 {
-    return mUVCoordinates;
+    return mElementBuffer;
 }
 
-int Mesh::uvCoordinatesLength() const
+int Mesh::elementBufferLength() const
 {
-    return mUVCoordinatesLength;
+    return mElementBufferLength;
 }
 
-int *Mesh::indices() const
+Vector3 Mesh::getVertex(int idx) const
 {
-    return mIndices;
+    if(idx >= mElementBufferLength)
+        return Vector3::zero;
+    Vector3 v;
+    v.x = mVertexBuffer[idx * 5 + 0];
+    v.y = mVertexBuffer[idx * 5 + 1];
+    v.z = mVertexBuffer[idx * 5 + 2];
+    return v;
 }
 
-int Mesh::indicesLength() const
+Vector3 Mesh::getUV(int idx) const
 {
-    return mIndexLength;
+    if(idx >= mElementBufferLength)
+        return Vector3::zero;
+    Vector3 v;
+    v.x = mVertexBuffer[idx * 5 + 3];
+    v.y = mVertexBuffer[idx * 5 + 4];
+    return v;
 }
 
 } // namespace cepp

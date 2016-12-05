@@ -158,26 +158,12 @@ int main(int argc, char *argv[])
     engine.addModule(new GLESRenderModule());
     engine.assetLoader()->loadDefaultImporters();
 
-    //Texture *tex = (Texture*)engine.assetLoader()->loadAsset("/tileset.png", "Texture");
-    //Sprite *s = new Sprite();
-    //s->setTexture(tex);
-    //s->setTextureCoordinates(cepp::Vector3(0, 0));
-    //s->setSize(cepp::Vector3(16, 16));
-    //s->setPivot(cepp::Vector3(0.5f, 0.5f));
-    //s->setPixelsPerUnit(16.f);
     Sprite *s = (Sprite*)engine.assetLoader()->loadAsset("/test.sprite", "Sprite");
+    Sprite *s2 = (Sprite*)engine.assetLoader()->loadAsset("/test2.sprite", "Sprite");
     Material *material = (Material*)engine.assetLoader()->loadAsset("/red.material", "Material");
     Mesh *mesh = (Mesh*)engine.assetLoader()->loadAsset("/box.obj", "Mesh");
 
     Scene *scene = new Scene();
-
-    GameObject *go = new GameObject("TestSprite");
-    SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
-    r->setSprite(s);
-    go->setParent(scene->rootObject());
-    go->setPosition(Vector3(0, 0, 0));
-    //go->addComponent(new Rotator());
-    go->addComponent(new AimAtCursor());
 
     GameObject *meshGo = new GameObject("TestMesh");
     MeshRenderer *mr = (MeshRenderer*)meshGo->addComponent(new MeshRenderer());
@@ -187,6 +173,20 @@ int main(int argc, char *argv[])
     meshGo->setPosition(Vector3(1, 0, 0));
     meshGo->addComponent(new Rotator());
     //meshGo->addComponent(new AimAtCursor());
+
+    GameObject *go = new GameObject("TestSprite");
+    SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
+    r->setSprite(s);
+    go->setParent(scene->rootObject());
+    go->setPosition(Vector3(0, 0, 0));
+    //go->addComponent(new Rotator());
+    go->addComponent(new AimAtCursor());
+
+    go = new GameObject("TestSprite");
+    r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
+    r->setSprite(s2);
+    go->setParent(scene->rootObject());
+    go->setPosition(Vector3(1, 0, 0));
 
     GameObject *cameraObj = new GameObject("Camera");
     Camera *c = (Camera*)cameraObj->addComponent(new Camera());

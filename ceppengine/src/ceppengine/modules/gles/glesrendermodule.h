@@ -74,8 +74,6 @@ class GLESRenderModule : public RenderModule
         void render();
 
     private:
-        float *combineArraysToBuffer(float *vertices, int vertexLength, float *uvCoords, int uvCoordsLength, int *length);
-
         EGLNativeWindowType mNativeWindow;
         EGLNativeDisplayType mNativeDisplay;
         EGLDisplay mEGLDisplay;
