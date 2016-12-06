@@ -1,6 +1,5 @@
-build*
-lib/*
-include/*
+/build/*
+/thirdparty/*
 
 *.pb.cc
 *.pb.h
