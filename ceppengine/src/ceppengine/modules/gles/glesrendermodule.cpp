@@ -453,7 +453,7 @@ void GLESRenderModule::render()
         }
     }
     else {
-        mRenderer.clear(Color::black);
+       // mRenderer.clear(Color::black);
     }
 
     eglSwapBuffers(mEGLDisplay, mEGLSurface);
