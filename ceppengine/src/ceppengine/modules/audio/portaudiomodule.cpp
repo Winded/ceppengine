@@ -18,7 +18,7 @@ void PortAudioHandle::setClip(AudioClip *clip)
 {
     if(mStream) {
         Pa_StopStream(mStream);
-        Pa_CloseStreamm(mStream);
+        Pa_CloseStream(mStream);
         mStream = 0;
     }
 
@@ -106,6 +106,14 @@ PortAudioModule::PortAudioModule()
 
 }
 
+PortAudioModule::~PortAudioModule()
+{
+    for(auto it = mHandles.begin(); it != mHandles.end(); ++it) {
+        delete *it;
+    }
+    mHandles.clear();
+}
+
 IAudioHandle *PortAudioModule::createHandle()
 {
     PortAudioHandle *handle = new PortAudioHandle(this);
@@ -117,7 +125,7 @@ void PortAudioModule::destroyHandle(IAudioHandle *handle)
 {
     PortAudioHandle *h = (PortAudioHandle*)handle;
 
-    auto it = std::find_if(mHandles.begin(), mHandles.end(), [h](const Ref<PortAudioHandle> &ph) {
+    auto it = std::find_if(mHandles.begin(), mHandles.end(), [h](PortAudioHandle *ph) {
         return ph == h;
     });
     if(it != mHandles.end()) {

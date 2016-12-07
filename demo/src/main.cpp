@@ -11,6 +11,7 @@
 #include <ceppengine/util/ref.h>
 #include <ceppengine/components/rendering/spriterenderer.h>
 #include <ceppengine/components/rendering/meshrenderer.h>
+#include <ceppengine/assets/audioclip.h>
 #include "components/rotator.h"
 #include "components/aimatcursor.h"
 
@@ -158,6 +159,7 @@ int main(int argc, char *argv[])
     engine.addModule(new GLESRenderModule());
     engine.assetLoader()->loadDefaultImporters();
 
+    AudioClip *clip = (AudioClip*)engine.assetLoader()->loadAsset("/memes.wav", "AudioClip");
     Sprite *s = (Sprite*)engine.assetLoader()->loadAsset("/test.sprite", "Sprite");
     Sprite *s2 = (Sprite*)engine.assetLoader()->loadAsset("/test2.sprite", "Sprite");
     Material *material = (Material*)engine.assetLoader()->loadAsset("/red.material", "Material");

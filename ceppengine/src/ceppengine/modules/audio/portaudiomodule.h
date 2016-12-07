@@ -50,12 +50,13 @@ class PortAudioModule : public AudioModule
 {
     public:
         PortAudioModule();
+        ~PortAudioModule();
 
         virtual IAudioHandle *createHandle();
         virtual void destroyHandle(IAudioHandle *handle);
 
     private:
-        std::vector<Ref<PortAudioHandle>> mHandles;
+        std::vector<PortAudioHandle*> mHandles;
 };
 
 }
