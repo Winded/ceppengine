@@ -35,6 +35,8 @@ class AudioModule : public Module
     public:
         AudioModule();
 
+        virtual std::string name() const;
+
         float masterVolume() const;
         void setMasterVolume(float volume);
 

@@ -1,6 +1,9 @@
 project(ceppengine)
 cmake_minimum_required(VERSION 2.8)
-file(GLOB_RECURSE SRC_LIST "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE SRC_LIST
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+)
 
 # Windows API UNICODE variable
 add_definitions(-DUNICODE)

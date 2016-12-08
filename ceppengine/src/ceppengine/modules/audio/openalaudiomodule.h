@@ -2,16 +2,17 @@
 
 #include "../audiomodule.h"
 #include "../../util/ref.h"
-#include <portaudio.h>
+#include <AL/al.h>
+#include <AL/alc.h>
 
 namespace cepp {
 
-class PortAudioModule;
+class OpenALModule;
 
-class PortAudioHandle : public IAudioHandle
+class OpenALAudioHandle : public IAudioHandle
 {
     public:
-        PortAudioHandle(PortAudioModule *module);
+        OpenALAudioHandle(OpenALModule *module);
 
         virtual AudioClip *clip() const;
         virtual void setClip(AudioClip *clip);
@@ -35,28 +36,45 @@ class PortAudioHandle : public IAudioHandle
         virtual void stop();
 
     private:
-        PortAudioModule *mModule;
+        OpenALModule *mModule;
 
         AudioClip *mClip;
-        PaStream *mStream;
+        ALuint mHandle;
 
-        friend class PortAudioModule;
+        friend class OpenALModule;
+};
+
+struct OpenALClip
+{
+        AudioClip *clip;
+        ALuint handle;
 };
 
 /**
- * Audio module for PortAudio, a cross-platform audio library
+ * Audio module using OpenAL
  */
-class PortAudioModule : public AudioModule
+class OpenALModule : public AudioModule
 {
     public:
-        PortAudioModule();
-        ~PortAudioModule();
+        OpenALModule();
+        ~OpenALModule();
 
         virtual IAudioHandle *createHandle();
         virtual void destroyHandle(IAudioHandle *handle);
 
+    protected:
+        virtual void initialize();
+
     private:
-        std::vector<PortAudioHandle*> mHandles;
+        int getBuffer(AudioClip *clip);
+        int updateBuffer(AudioClip *clip);
+
+        std::vector<OpenALAudioHandle*> mHandles;
+        std::vector<OpenALClip> mClips;
+        ALCdevice *mDevice;
+        ALCcontext *mContext;
+
+        friend class OpenALAudioHandle;
 };
 
 }

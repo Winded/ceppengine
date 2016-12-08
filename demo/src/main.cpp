@@ -6,14 +6,17 @@
 #include <ceppengine/modules/windows/winruntimemodule.h>
 #include <ceppengine/modules/windows/windowsinputmodule.h>
 #include <ceppengine/modules/gles/glesrendermodule.h>
+#include <ceppengine/modules/audio/openalaudiomodule.h>
 #include <ceppengine/gameobject.h>
 #include <ceppengine/scene.h>
 #include <ceppengine/util/ref.h>
 #include <ceppengine/components/rendering/spriterenderer.h>
 #include <ceppengine/components/rendering/meshrenderer.h>
+#include <ceppengine/components/audio/audiosource.h>
 #include <ceppengine/assets/audioclip.h>
 #include "components/rotator.h"
 #include "components/aimatcursor.h"
+#include "components/playonpress.h"
 
 using namespace cepp;
 
@@ -157,6 +160,7 @@ int main(int argc, char *argv[])
     engine.addModule(runtimeMod);
     engine.addModule(new WindowsInputModule());
     engine.addModule(new GLESRenderModule());
+    engine.addModule(new OpenALModule());
     engine.assetLoader()->loadDefaultImporters();
 
     AudioClip *clip = (AudioClip*)engine.assetLoader()->loadAsset("/memes.wav", "AudioClip");
@@ -189,6 +193,13 @@ int main(int argc, char *argv[])
     r->setSprite(s2);
     go->setParent(scene->rootObject());
     go->setPosition(Vector3(1, 0, 0));
+
+    go = new GameObject("AudioMedic");
+    AudioSource *as = (AudioSource*)go->addComponent(new AudioSource());
+    as->setClip(clip);
+    go->addComponent(new PlayOnPress());
+    go->setParent(scene->rootObject());
+    go->setPosition(Vector3::zero);
 
     GameObject *cameraObj = new GameObject("Camera");
     Camera *c = (Camera*)cameraObj->addComponent(new Camera());

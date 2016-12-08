@@ -66,13 +66,6 @@ void GLESRenderer::draw()
     });
     assert(mIt != module->mModels.end());
 
-//    printf("\nElement\n");
-//    for(int i = 0; i < mMesh->elementBufferLength(); i++)
-//        printf("%i, ", mMesh->elementBuffer()[i]);
-//    printf("\nVertex\n");
-//    for(int i = 0; i < mMesh->vertexBufferLength(); i++)
-//        printf("%f, ", mMesh->vertexBuffer()[i]);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*mIt).EBO);
     glBindBuffer(GL_ARRAY_BUFFER, (*mIt).VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * sizeof(float), (GLvoid*)0);

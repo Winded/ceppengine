@@ -14,4 +14,5 @@ target_link_libraries(${PROJECT_NAME} ceppengine user32 gdi32)
 include_directories(src
     ${CMAKE_CURRENT_SOURCE_DIR}/../ceppengine/src
     ${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/openalsoft/include
 )

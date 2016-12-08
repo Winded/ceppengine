@@ -11,7 +11,7 @@ namespace cepp {
 
 AssetLoader::AssetLoader()
 {
-    mLoadPath = "../assets";
+    mLoadPath = "E:\\Projects\\ceppengine\\assets";
 }
 
 std::string AssetLoader::loadPath() const

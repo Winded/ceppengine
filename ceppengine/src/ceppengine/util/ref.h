@@ -53,7 +53,7 @@ Ref<Type>::~Ref()
 {
     if(mValue != 0) {
         if(mValue->removeReference() == 0) {
-            delete mValue;
+            delete ((Type*)mValue);
         }
     }
 }
@@ -63,7 +63,7 @@ Ref<Type> &Ref<Type>::operator =(const Ref<Type> &other)
 {
     if(mValue != 0) {
         if(mValue->removeReference() == 0) {
-            delete mValue;
+            delete ((Type*)mValue);
         }
     }
 
@@ -79,7 +79,7 @@ Ref<Type> &Ref<Type>::operator =(Type *pointer)
 {
     if(mValue != 0) {
         if(mValue->removeReference() == 0) {
-            delete mValue;
+            delete ((Type*)mValue);
         }
     }
     mValue = pointer;
@@ -95,7 +95,7 @@ Ref<Type> &Ref<Type>::operator =(int value)
     assert(value == 0);
     if(mValue != 0) {
         if(mValue->removeReference() == 0) {
-            delete mValue;
+            delete ((Type*)mValue);
         }
     }
     mValue = 0;
