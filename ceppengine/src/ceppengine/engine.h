@@ -8,6 +8,7 @@
 #include "modules/inputmodule.h"
 #include "modules/rendermodule.h"
 #include "modules/audiomodule.h"
+#include "modules/filemodule.h"
 #include "scene.h"
 #include <vector>
 
@@ -50,6 +51,7 @@ class Engine
         InputModule *inputModule();
         RenderModule *renderModule();
         AudioModule *audioModule();
+        FileModule *fileModule();
 
         /**
          * Load a scene into the engine. This needs to be called before starting the engine.
@@ -70,6 +72,7 @@ class Engine
         InputModule *mCachedInputModule;
         RenderModule *mCachedRenderModule;
         AudioModule *mCachedAudioModule;
+        FileModule *mCachedFileModule;
 
         AssetLoader mAssetLoader;
         DefaultAssets mDefaultAssets;

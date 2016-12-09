@@ -5,6 +5,7 @@
 #include <ceppengine/engine.h>
 #include <ceppengine/modules/windows/winruntimemodule.h>
 #include <ceppengine/modules/windows/windowsinputmodule.h>
+#include <ceppengine/modules/windows/windowsfilemodule.h>
 #include <ceppengine/modules/gles/glesrendermodule.h>
 #include <ceppengine/modules/audio/openalaudiomodule.h>
 #include <ceppengine/gameobject.h>
@@ -159,6 +160,7 @@ int main(int argc, char *argv[])
     runtimeMod->proc = WindowProc;
     engine.addModule(runtimeMod);
     engine.addModule(new WindowsInputModule());
+    engine.addModule(new WindowsFileModule());
     engine.addModule(new GLESRenderModule());
     engine.addModule(new OpenALModule());
     engine.assetLoader()->loadDefaultImporters();

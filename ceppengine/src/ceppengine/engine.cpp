@@ -9,7 +9,8 @@ Engine *Engine::instance()
     return sInstance;
 }
 
-Engine::Engine() : mRunning(false), mCachedRuntimeModule(0), mCachedInputModule(0), mCachedRenderModule(0), mCachedAudioModule(0), mNewScene(0)
+Engine::Engine() : mRunning(false), mNewScene(0),
+    mCachedRuntimeModule(0), mCachedInputModule(0), mCachedRenderModule(0), mCachedAudioModule(0), mCachedFileModule(0)
 {
     if(!sInstance)
         sInstance = this;
@@ -101,6 +102,20 @@ AudioModule *Engine::audioModule()
     }
     else {
         return (AudioModule*)getModule("AudioModule");
+    }
+}
+
+FileModule *Engine::fileModule()
+{
+    if(mRunning && mCachedFileModule) {
+        return mCachedFileModule;
+    }
+    else if(mRunning) {
+        mCachedFileModule = (FileModule*)getModule("FileModule");
+        return mCachedFileModule;
+    }
+    else {
+        return (FileModule*)getModule("FileModule");
     }
 }
 

@@ -1,6 +1,7 @@
 #include "assetloader.h"
 #include <algorithm>
 #include <fstream>
+#include "../engine.h"
 #include "importers/textureimporter.h"
 #include "importers/jsonimporter.h"
 #include "importers/shaderimporter.h"
@@ -11,7 +12,7 @@ namespace cepp {
 
 AssetLoader::AssetLoader()
 {
-    mLoadPath = "E:\\Projects\\ceppengine\\assets";
+    mLoadPath = "../assets";
 }
 
 std::string AssetLoader::loadPath() const
@@ -31,7 +32,6 @@ void AssetLoader::loadDefaultImporters()
     mImporters.push_back(new ShaderImporter());
     mImporters.push_back(new MeshImporter());
     mImporters.push_back(new AudioImporter());
-    // TODO
 }
 
 Asset *AssetLoader::loadAsset(const std::string &path, const std::string &type)
@@ -56,11 +56,9 @@ Asset *AssetLoader::loadAsset(const std::string &path, const std::string &type)
         return 0;
 
     // Open input stream
-    std::string filePath = assetPathToFilePath(path);
-    std::ifstream stream;
-    stream.open(filePath, std::ios::binary);
-    std::vector<Asset*> assets = importer->import(stream);
-    stream.close();
+    std::istream *stream = Engine::instance()->fileModule()->getAssetReadStream(path);
+    std::vector<Asset*> assets = importer->import(*stream);
+    Engine::instance()->fileModule()->closeStream(stream);
 
     Asset *rAsset = 0;
     for(auto it = assets.begin(); it != assets.end(); ++it) {
