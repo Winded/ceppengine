@@ -22,6 +22,10 @@ class Mesh : public Asset
          * Load mesh into the graphics module, if it is not loaded already
          */
         int load();
+        /**
+         * Push any updates to the mesh into the graphics module
+         */
+        void refresh();
 
         float *vertexBuffer() const;
         int vertexBufferLength() const;

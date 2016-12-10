@@ -129,9 +129,23 @@ void GLESRenderer::applyShaderParams(int program, const std::vector<ShaderParame
     }
 }
 
-GLESRenderModule::GLESRenderModule() : mNativeWindow(0), mNativeDisplay(0), mEGLDisplay(0), mEGLContext(0), mEGLSurface(0)
+GLESRenderModule::GLESRenderModule()
+    : mVSync(false), mNativeWindow(0), mNativeDisplay(0), mEGLDisplay(0), mEGLContext(0), mEGLSurface(0)
 {
     mRenderer.module = this;
+}
+
+bool GLESRenderModule::vsync() const
+{
+    return mVSync;
+}
+
+void GLESRenderModule::setVSync(bool vsync)
+{
+    mVSync = vsync;
+    if(mEGLDisplay) {
+        eglSwapInterval(mEGLDisplay, mVSync ? 1 : 0);
+    }
 }
 
 void GLESRenderModule::addHandler(Object *object, RenderModule::Callback function)
@@ -323,21 +337,21 @@ float *GLESRenderModule::getGlobalShaderParam(const std::string &name, int *size
 
 void GLESRenderModule::setGlobalShaderParam(const std::string &name, float *value, int size)
 {
-    // Copy data first
-    float *data = new float[size];
-    for(int i = 0; i < size; i++)
-        data[i] = value[i];
-
     auto it = std::find_if(mShaderParams.begin(), mShaderParams.end(), [name](const ShaderParameter &param) {
        return param.name == name;
     });
 
     if(it != mShaderParams.end()) {
-        delete (*it).data;
-        (*it).data = data;
+        // Parameter exists, but is different size; do realloc
+        if(size != (*it).size)
+            realloc((*it).data, size * sizeof(float));
+        memcpy((*it).data, value, size * sizeof(float));
         (*it).size = size;
     }
     else {
+        // Create new parameter
+        float *data = new float[size];
+        memcpy(data, value, size * sizeof(float));
         ShaderParameter param;
         param.data = data;
         param.size = size;
@@ -428,6 +442,9 @@ void GLESRenderModule::initialize()
     {
         return;
     }
+
+    // Update swap interval
+    setVSync(mVSync);
 }
 
 void GLESRenderModule::render()

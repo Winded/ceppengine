@@ -1,0 +1,14 @@
+{
+    "type": "SpriteAnimation",
+    "loop": true,
+    "frames": [
+        {
+            "duration": 1,
+            "sprite": "/grass.sprite"
+        },
+        {
+            "duration": 1,
+            "sprite": "/tree.sprite"
+        }
+    ]
+}

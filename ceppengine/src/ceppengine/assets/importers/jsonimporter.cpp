@@ -2,6 +2,7 @@
 #include "../../util/thirdparty/json/json.h"
 #include "../material.h"
 #include "../sprite.h"
+#include "../spriteanimation.h"
 #include "../../engine.h"
 
 namespace cepp {
@@ -13,7 +14,7 @@ JsonImporter::JsonImporter()
 
 bool JsonImporter::canLoadExtension(const std::string &extension) const
 {
-    return extension == ".sprite" || extension == ".material";
+    return extension == ".sprite" || extension == ".material" || extension == ".spriteanim";
 }
 
 std::vector<Asset *> JsonImporter::import(std::istream &stream) const
@@ -92,6 +93,25 @@ Asset *JsonImporter::createAsset(const Json::Value &jObj) const
         sprite->setPixelsPerUnit(jObj.get("pixelsPerUnit", 1.f).asFloat());
 
         return sprite;
+    }
+    else if(type == "SpriteAnimation") {
+        Json::Value jFrames = jObj.get("frames", Json::Value());
+        std::vector<SpriteAnimation::Frame> frames;
+        if(jFrames.isArray()) {
+            for(int i = 0; i < jFrames.size(); i++) {
+                Json::Value jFrame = jFrames.get(i, Json::Value());
+                if(!jFrame.isObject()) continue;
+                SpriteAnimation::Frame f;
+                f.duration = jFrame.get("duration", 0.f).asFloat();
+                f.sprite = (Sprite*)Engine::instance()->assetLoader()->loadAsset(jFrame.get("sprite", "").asString(), "Sprite");
+                frames.push_back(f);
+            }
+        }
+
+        bool loop = jObj.get("loop", false).asBool();
+        SpriteAnimation *anim = new SpriteAnimation(frames);
+        anim->setLoop(loop);
+        return anim;
     }
     else {
         return 0;

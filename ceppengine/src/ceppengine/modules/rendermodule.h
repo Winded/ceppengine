@@ -38,6 +38,9 @@ class RenderModule : public Module
 
         virtual std::string name() const;
 
+        virtual bool vsync() const = 0;
+        virtual void setVSync(bool vsync) = 0;
+
         virtual void addHandler(Object *object, Callback function) = 0;
         virtual void removeHandler(Object *object) = 0;
 

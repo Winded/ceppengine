@@ -13,8 +13,10 @@
 #include <ceppengine/util/ref.h>
 #include <ceppengine/components/rendering/spriterenderer.h>
 #include <ceppengine/components/rendering/meshrenderer.h>
+#include <ceppengine/components/animation/spriteanimator.h>
 #include <ceppengine/components/audio/audiosource.h>
 #include <ceppengine/assets/audioclip.h>
+#include "components/fpsprint.h"
 #include "components/rotator.h"
 #include "components/aimatcursor.h"
 #include "components/playonpress.h"
@@ -166,33 +168,24 @@ int main(int argc, char *argv[])
     engine.assetLoader()->loadDefaultImporters();
 
     AudioClip *clip = (AudioClip*)engine.assetLoader()->loadAsset("/memes.wav", "AudioClip");
-    Sprite *s = (Sprite*)engine.assetLoader()->loadAsset("/test.sprite", "Sprite");
-    Sprite *s2 = (Sprite*)engine.assetLoader()->loadAsset("/test2.sprite", "Sprite");
-    Material *material = (Material*)engine.assetLoader()->loadAsset("/red.material", "Material");
-    Mesh *mesh = (Mesh*)engine.assetLoader()->loadAsset("/box.obj", "Mesh");
-
+    Sprite *grassSprite = (Sprite*)engine.assetLoader()->loadAsset("/grass.sprite", "Sprite");
+    Sprite *treeSprite = (Sprite*)engine.assetLoader()->loadAsset("/tree.sprite", "Sprite");
+    SpriteAnimation *anim = (SpriteAnimation*)engine.assetLoader()->loadAsset("/testanim.spriteanim", "SpriteAnimation");
     Scene *scene = new Scene();
-
-    GameObject *meshGo = new GameObject("TestMesh");
-    MeshRenderer *mr = (MeshRenderer*)meshGo->addComponent(new MeshRenderer());
-    mr->setMesh(mesh);
-    mr->setMaterial(material);
-    meshGo->setParent(scene->rootObject());
-    meshGo->setPosition(Vector3(1, 0, 0));
-    meshGo->addComponent(new Rotator());
-    //meshGo->addComponent(new AimAtCursor());
 
     GameObject *go = new GameObject("TestSprite");
     SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
-    r->setSprite(s);
+    r->setSprite(grassSprite);
     go->setParent(scene->rootObject());
     go->setPosition(Vector3(0, 0, 0));
-    //go->addComponent(new Rotator());
     go->addComponent(new AimAtCursor());
 
     go = new GameObject("TestSprite");
     r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
-    r->setSprite(s2);
+    r->setSprite(treeSprite);
+    SpriteAnimator *animator = (SpriteAnimator*)go->addComponent(new SpriteAnimator());
+    animator->setAnimation(anim);
+    animator->setAutoPlay(true);
     go->setParent(scene->rootObject());
     go->setPosition(Vector3(1, 0, 0));
 
@@ -206,6 +199,7 @@ int main(int argc, char *argv[])
     GameObject *cameraObj = new GameObject("Camera");
     Camera *c = (Camera*)cameraObj->addComponent(new Camera());
     c->setBackgroundColor(Color(100, 100, 100, 255));
+    //cameraObj->addComponent(new FPSPrint());
     cameraObj->setParent(scene->rootObject());
     cameraObj->setPosition(Vector3(0, 0, -5.f));
 

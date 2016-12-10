@@ -26,6 +26,17 @@ Sprite *SpriteRenderer::sprite() const
 void SpriteRenderer::setSprite(Sprite *sprite)
 {
     mSprite = sprite;
+    if(mSprite && mMaterial) {
+        mMaterial->setTexture(mSprite->texture());
+    }
+    else if(mMaterial) {
+        mMaterial->setTexture(0);
+    }
+    if(mSprite && mMesh) {
+        calculateVertices();
+        calculateTexCoords();
+        mMesh->refresh();
+    }
 }
 
 Color SpriteRenderer::color() const

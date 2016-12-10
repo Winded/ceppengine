@@ -85,6 +85,13 @@ int Mesh::load()
     return mModuleHandle;
 }
 
+void Mesh::refresh()
+{
+    if(mModuleHandle != -1) {
+        Engine::instance()->renderModule()->updateModel(mModuleHandle, this);
+    }
+}
+
 float *Mesh::vertexBuffer() const
 {
     return mVertexBuffer;

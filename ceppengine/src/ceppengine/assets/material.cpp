@@ -54,21 +54,21 @@ float *Material::getShaderParam(std::string name, int *size) const
 
 void Material::setShaderParam(std::string name, float *value, int size)
 {
-    // Copy data first
-    float *data = new float[size];
-    for(int i = 0; i < size; i++)
-        data[i] = value[i];
-
     auto it = std::find_if(mShaderParams.begin(), mShaderParams.end(), [name](const ShaderParameter &param) {
        return param.name == name;
     });
 
     if(it != mShaderParams.end()) {
-        delete (*it).data;
-        (*it).data = data;
+        // Parameter exists, but is different size; do realloc
+        if(size != (*it).size)
+            realloc((*it).data, size * sizeof(float));
+        memcpy((*it).data, value, size * sizeof(float));
         (*it).size = size;
     }
     else {
+        // Create new parameter
+        float *data = new float[size];
+        memcpy(data, value, size * sizeof(float));
         ShaderParameter param;
         param.data = data;
         param.size = size;

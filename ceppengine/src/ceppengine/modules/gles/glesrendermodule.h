@@ -50,6 +50,9 @@ class GLESRenderModule : public RenderModule
     public:
         GLESRenderModule();
 
+        virtual bool vsync() const;
+        virtual void setVSync(bool vsync);
+
         virtual void addHandler(Object *object, Callback function);
         virtual void removeHandler(Object *object);
 
@@ -74,6 +77,8 @@ class GLESRenderModule : public RenderModule
         void render();
 
     private:
+        bool mVSync;
+
         EGLNativeWindowType mNativeWindow;
         EGLNativeDisplayType mNativeDisplay;
         EGLDisplay mEGLDisplay;
