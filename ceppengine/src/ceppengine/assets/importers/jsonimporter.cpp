@@ -21,6 +21,9 @@ std::vector<Asset *> JsonImporter::import(std::istream &stream) const
 {
     std::vector<Asset*> assets;
 
+    if(stream.fail() || stream.eof())
+        return assets;
+
     Json::Value root;
     stream >> root;
     if(root.isObject()) {

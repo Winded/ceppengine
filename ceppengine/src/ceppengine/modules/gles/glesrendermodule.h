@@ -4,7 +4,6 @@
 #include "../../util/ref.h"
 #include <EGL/egl.h>
 #include <EGL/eglplatform.h>
-#include "../../assets/material.h"
 
 namespace cepp {
 
@@ -34,6 +33,7 @@ class GLESRenderer : public IRenderer
         virtual void applySettings();
 
         virtual void draw();
+
         virtual void clear(Color color);
 
         GLESRenderModule *module;
@@ -65,7 +65,7 @@ class GLESRenderModule : public RenderModule
         virtual void deleteModel(int handle);
 
         virtual int createTexture(Texture *texture);
-        virtual void updateTexture(int handle, Texture *texture);
+        virtual void updateTexture(int handle, Texture *texture, bool greyscale);
         virtual void deleteTexture(int handle);
 
         virtual float *getGlobalShaderParam(const std::string &name, int *size) const;

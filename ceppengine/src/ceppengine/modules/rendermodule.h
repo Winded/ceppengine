@@ -5,6 +5,7 @@
 #include "../math/vector3.h"
 #include "../assets/mesh.h"
 #include "../assets/material.h"
+#include "../assets/font.h"
 
 namespace cepp {
 
@@ -38,6 +39,8 @@ class RenderModule : public Module
 
         virtual std::string name() const;
 
+        FT_Library fontLibrary() const;
+
         virtual bool vsync() const = 0;
         virtual void setVSync(bool vsync) = 0;
 
@@ -62,12 +65,17 @@ class RenderModule : public Module
         virtual void deleteModel(int handle) = 0;
 
         virtual int createTexture(Texture *texture) = 0;
-        virtual void updateTexture(int handle, Texture *texture) = 0;
+        virtual void updateTexture(int handle, Texture *texture, bool greyscale = false) = 0;
         virtual void deleteTexture(int handle) = 0;
 
         virtual float *getGlobalShaderParam(const std::string &name, int *size) const = 0;
         virtual void setGlobalShaderParam(const std::string &name, float *value, int size) = 0;
         virtual void deleteGlobalShaderParam(const std::string &name) = 0;
+
+        virtual void initialize();
+
+    private:
+        FT_Library mFTLib;
 };
 
 } // namespace cepp

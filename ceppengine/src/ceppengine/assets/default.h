@@ -17,11 +17,13 @@ class DefaultAssets
         DefaultAssets();
 
         Shader *basicShader() const;
+        Shader *fontShader() const;
         Texture *whiteTexture() const;
         Mesh *quadMesh() const;
 
     private:
         Ref<Shader> mBasicShader;
+        Ref<Shader> mFontShader;
         Ref<Texture> mWhiteTexture;
         Ref<Mesh> mQuadMesh;
 };

@@ -30,6 +30,16 @@ int Texture::load()
     return mModuleHandle;
 }
 
+void Texture::refresh(int width, int height, void *data, bool greyscale)
+{
+    mWidth = width;
+    mHeight = height;
+    mData = data;
+
+    if(mModuleHandle != -1)
+        Engine::instance()->renderModule()->updateTexture(mModuleHandle, this, greyscale);
+}
+
 int Texture::width() const
 {
     return mWidth;

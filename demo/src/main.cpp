@@ -15,6 +15,7 @@
 #include <ceppengine/components/rendering/meshrenderer.h>
 #include <ceppengine/components/animation/spriteanimator.h>
 #include <ceppengine/components/audio/audiosource.h>
+#include <ceppengine/components/ui/uitext.h>
 #include <ceppengine/assets/audioclip.h>
 #include "components/fpsprint.h"
 #include "components/rotator.h"
@@ -171,6 +172,8 @@ int main(int argc, char *argv[])
     Sprite *grassSprite = (Sprite*)engine.assetLoader()->loadAsset("/grass.sprite", "Sprite");
     Sprite *treeSprite = (Sprite*)engine.assetLoader()->loadAsset("/tree.sprite", "Sprite");
     SpriteAnimation *anim = (SpriteAnimation*)engine.assetLoader()->loadAsset("/testanim.spriteanim", "SpriteAnimation");
+    Font *font = (Font*)engine.assetLoader()->loadAsset("/LCDSolid.ttf", "Font");
+
     Scene *scene = new Scene();
 
     GameObject *go = new GameObject("TestSprite");
@@ -196,12 +199,22 @@ int main(int argc, char *argv[])
     go->setParent(scene->rootObject());
     go->setPosition(Vector3::zero);
 
+    go = new GameObject("Txt");
+    UIText *uiTxt = (UIText*)go->addComponent(new UIText());
+    uiTxt->setFont(font);
+    uiTxt->setText("Sample text");
+    uiTxt->setFontSize(120);
+    go->setParent(scene->rootObject());
+    go->setPosition(Vector3(100, 0, 0));
+
     GameObject *cameraObj = new GameObject("Camera");
     Camera *c = (Camera*)cameraObj->addComponent(new Camera());
     c->setBackgroundColor(Color(100, 100, 100, 255));
     //cameraObj->addComponent(new FPSPrint());
     cameraObj->setParent(scene->rootObject());
     cameraObj->setPosition(Vector3(0, 0, -5.f));
+
+    Engine::instance()->runtimeModule()->setScreenResolution(Vector3(1280, 720, 0));
 
     engine.loadScene(scene);
 

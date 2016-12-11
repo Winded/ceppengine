@@ -19,6 +19,10 @@ class Texture : public Asset
          * Load texture into the graphics module, if it is not loaded already
          */
         int load();
+        /**
+         * Update texture properties and send these updates to render module.
+         */
+        void refresh(int width, int height, void *data, bool greyscale = false);
 
         int width() const;
         int height() const;

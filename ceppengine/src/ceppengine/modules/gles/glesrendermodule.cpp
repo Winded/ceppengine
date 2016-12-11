@@ -34,6 +34,9 @@ void GLESRenderer::setMesh(Mesh *mesh)
 
 void GLESRenderer::applySettings()
 {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     Shader *shader = mMaterial ? mMaterial->shader() : Engine::instance()->defaultAssets()->basicShader();
     int shaderProgram = shader->load();
     glUseProgram(shaderProgram);
@@ -267,6 +270,11 @@ void GLESRenderModule::updateModel(int handle, Mesh *mesh)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, eBufLength * sizeof(int), eBuf, GL_STATIC_DRAW);
 
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * sizeof(float), (GLvoid*)0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -308,11 +316,24 @@ int GLESRenderModule::createTexture(Texture *texture)
     return glTex;
 }
 
-void GLESRenderModule::updateTexture(int handle, Texture *texture)
+void GLESRenderModule::updateTexture(int handle, Texture *texture, bool greyscale)
 {
     glBindTexture(GL_TEXTURE_2D, handle);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, texture->width(), texture->height(), GL_RGBA, GL_UNSIGNED_BYTE, texture->data());
+    if(greyscale) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, texture->width(), texture->height(), 0, GL_ALPHA, GL_UNSIGNED_BYTE, texture->data());
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+    else {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width(), texture->height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data());
+    }
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    GLenum err = glGetError();
+    assert(err == GL_FALSE);
 }
 
 void GLESRenderModule::deleteTexture(int handle)
@@ -374,6 +395,8 @@ void GLESRenderModule::deleteGlobalShaderParam(const std::string &name)
 
 void GLESRenderModule::initialize()
 {
+    RenderModule::initialize();
+
     // Windows code
     WindowsRuntimeModule *runtimeMod = (WindowsRuntimeModule*)Engine::instance()->runtimeModule();
     mNativeWindow = runtimeMod->getWindowHandle();

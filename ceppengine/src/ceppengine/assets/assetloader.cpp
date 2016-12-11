@@ -7,6 +7,7 @@
 #include "importers/shaderimporter.h"
 #include "importers/meshimporter.h"
 #include "importers/audioimporter.h"
+#include "importers/fontimporter.h"
 
 namespace cepp {
 
@@ -32,6 +33,7 @@ void AssetLoader::loadDefaultImporters()
     mImporters.push_back(new ShaderImporter());
     mImporters.push_back(new MeshImporter());
     mImporters.push_back(new AudioImporter());
+    mImporters.push_back(new FontImporter());
 }
 
 Asset *AssetLoader::loadAsset(const std::string &path, const std::string &type)
