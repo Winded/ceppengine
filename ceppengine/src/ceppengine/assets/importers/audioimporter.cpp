@@ -23,8 +23,8 @@ std::vector<Asset *> AudioImporter::import(std::istream &stream) const
 
     char signature[4];
     stream.read(signature, 4);
-    if(!strcmp(signature, "RIFF")) {
-        fprintf(stderr, "AudioImporter: Specified stream is not a wave file");
+    if(strncmp(signature, "RIFF", 4) < 0) {
+        fprintf(stderr, "AudioImporter: Specified stream is not a wave file\n");
         return assets;
     }
 
@@ -33,15 +33,15 @@ std::vector<Asset *> AudioImporter::import(std::istream &stream) const
 
     char format[4];
     stream.read(format, 4);
-    if(!strcmp(format, "WAVE")) {
-        fprintf(stderr, "AudioImporter: Specified stream is not a wave file");
+    if(!strncmp(format, "WAVE", 4) < 0) {
+        fprintf(stderr, "AudioImporter: Specified stream is not a wave file\n");
         return assets;
     }
 
     char format_signature[4];
     stream.read(format_signature, 4);
-    if(!strcmp(format_signature, "fmt ")) {
-        fprintf(stderr, "AudioImporter: Specified wave file is not supported");
+    if(!strncmp(format_signature, "fmt ", 4) < 0) {
+        fprintf(stderr, "AudioImporter: Specified wave file is not supported\n");
         return assets;
     }
 
@@ -58,8 +58,8 @@ std::vector<Asset *> AudioImporter::import(std::istream &stream) const
 
     char data_signature[4];
     stream.read(data_signature, 4);
-    if(!strcmp(data_signature, "data")) {
-        fprintf(stderr, "AudioImporter: Specified wave file is not supported");
+    if(strncmp(data_signature, "data", 4) < 0) {
+        fprintf(stderr, "AudioImporter: Specified wave file is not supported\n");
         return assets;
     }
 

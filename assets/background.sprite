@@ -1,0 +1,8 @@
+{
+    "type": "Sprite",
+    "texture": "/lazy_brain_spritesheet.png",
+    "textureCoordinates": [248, 300],
+    "size": [256, 240],
+    "pivot": [0.5, 0.5],
+    "pixelsPerUnit": 50
+}

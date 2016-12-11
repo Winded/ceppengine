@@ -127,20 +127,30 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return lRet;
 }
 
-void testRefs() {
-    Ref<GameObject> go = new GameObject("Test");
-    {
-        Ref<GameObject> go2 = go;
-    }
-    GameObject *go3 = go;
-    std::cout << go3->name() << std::endl;
+void loadScene(Scene *scene)
+{
+    GameObject *go = 0;
 
-    std::vector<Ref<GameObject>> goList;
-    for(int i = 0; i < 1000; i++)
-        goList.push_back(new GameObject("Test" + std::to_string(i)));
-    for(auto it = goList.begin(); it != goList.end(); ++it) {
-        GameObject *go4 = *it;
-    }
+    GameObject *cameraObj = new GameObject("Camera");
+    Camera *c = (Camera*)cameraObj->addComponent(new Camera());
+    c->setBackgroundColor(Color::black);
+    cameraObj->setParent(scene->rootObject());
+    cameraObj->setPosition(Vector3(0, 0, -5.f));
+
+    go = new GameObject("Music");
+    AudioSource *as = (AudioSource*)go->addComponent(new AudioSource());
+    as->setClip((AudioClip*)Engine::instance()->assetLoader()->loadAsset("/orbital_colossus.wav", "AudioClip"));
+    as->setPlayOnStart(true);
+    as->setLoop(true);
+    go->setParent(scene->rootObject());
+    go->setPosition(Vector3::zero);
+
+    go = new GameObject("Background");
+    SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
+    r->setSprite((Sprite*)Engine::instance()->assetLoader()->loadAsset("/background.sprite", "Sprite"));
+    r->setColor(Color::white);
+    go->setParent(scene->rootObject());
+    go->setPosition(Vector3::zero);
 }
 
 int main(int argc, char *argv[])
@@ -148,18 +158,8 @@ int main(int argc, char *argv[])
     UNUSED_PARAM(argc);
     UNUSED_PARAM(argv);
 
-    Vector3 vec(1, 1, 1);
-    std::cout << vec.length() << std::endl;
-
-    Matrix4 mat = Matrix4::trs(Vector3(1, 0, 0), Vector3(0, 0, 90), Vector3::one);
-    std::cout << mat << std::endl;
-
-    //std::cout << "Ref test begin" << std::endl;
-    //testRefs();
-    //std::cout << "Ref test complete" << std::endl;
-
     Engine engine;
-    auto runtimeMod = new WindowsRuntimeModule();
+    WindowsRuntimeModule *runtimeMod = new WindowsRuntimeModule();
     runtimeMod->proc = WindowProc;
     engine.addModule(runtimeMod);
     engine.addModule(new WindowsInputModule());
@@ -168,53 +168,12 @@ int main(int argc, char *argv[])
     engine.addModule(new OpenALModule());
     engine.assetLoader()->loadDefaultImporters();
 
-    AudioClip *clip = (AudioClip*)engine.assetLoader()->loadAsset("/memes.wav", "AudioClip");
-    Sprite *grassSprite = (Sprite*)engine.assetLoader()->loadAsset("/grass.sprite", "Sprite");
-    Sprite *treeSprite = (Sprite*)engine.assetLoader()->loadAsset("/tree.sprite", "Sprite");
-    SpriteAnimation *anim = (SpriteAnimation*)engine.assetLoader()->loadAsset("/testanim.spriteanim", "SpriteAnimation");
-    Font *font = (Font*)engine.assetLoader()->loadAsset("/LCDSolid.ttf", "Font");
-
     Scene *scene = new Scene();
 
-    GameObject *go = new GameObject("TestSprite");
-    SpriteRenderer *r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
-    r->setSprite(grassSprite);
-    go->setParent(scene->rootObject());
-    go->setPosition(Vector3(0, 0, 0));
-    go->addComponent(new AimAtCursor());
+    loadScene(scene);
 
-    go = new GameObject("TestSprite");
-    r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
-    r->setSprite(treeSprite);
-    SpriteAnimator *animator = (SpriteAnimator*)go->addComponent(new SpriteAnimator());
-    animator->setAnimation(anim);
-    animator->setAutoPlay(true);
-    go->setParent(scene->rootObject());
-    go->setPosition(Vector3(1, 0, 0));
-
-    go = new GameObject("AudioMedic");
-    AudioSource *as = (AudioSource*)go->addComponent(new AudioSource());
-    as->setClip(clip);
-    go->addComponent(new PlayOnPress());
-    go->setParent(scene->rootObject());
-    go->setPosition(Vector3::zero);
-
-    go = new GameObject("Txt");
-    UIText *uiTxt = (UIText*)go->addComponent(new UIText());
-    uiTxt->setFont(font);
-    uiTxt->setText("Sample text");
-    uiTxt->setFontSize(120);
-    go->setParent(scene->rootObject());
-    go->setPosition(Vector3(100, 0, 0));
-
-    GameObject *cameraObj = new GameObject("Camera");
-    Camera *c = (Camera*)cameraObj->addComponent(new Camera());
-    c->setBackgroundColor(Color(100, 100, 100, 255));
-    //cameraObj->addComponent(new FPSPrint());
-    cameraObj->setParent(scene->rootObject());
-    cameraObj->setPosition(Vector3(0, 0, -5.f));
-
-    Engine::instance()->runtimeModule()->setScreenResolution(Vector3(1280, 720, 0));
+    Engine::instance()->runtimeModule()->setScreenResolution(Vector3(720, 720, 0));
+    Engine::instance()->runtimeModule()->setWindowTitle(L"CeppEngine demo");
 
     engine.loadScene(scene);
 
