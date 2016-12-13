@@ -1,5 +1,4 @@
 /build/*
-/thirdparty/*
 
 *.pb.cc
 *.pb.h
