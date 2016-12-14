@@ -21,6 +21,8 @@
 #include "components/rotator.h"
 #include "components/aimatcursor.h"
 #include "components/playonpress.h"
+#include "components/playermovement.h"
+#include "components/playeranimations.h"
 
 using namespace cepp;
 
@@ -135,7 +137,7 @@ void loadScene(Scene *scene)
     Camera *c = (Camera*)cameraObj->addComponent(new Camera());
     c->setBackgroundColor(Color::black);
     cameraObj->setParent(scene->rootObject());
-    cameraObj->setPosition(Vector3(0, 0, -5.f));
+    cameraObj->setPosition(Vector3(0, 2, -5.f));
 
     go = new GameObject("Music");
     AudioSource *as = (AudioSource*)go->addComponent(new AudioSource());
@@ -150,7 +152,31 @@ void loadScene(Scene *scene)
     r->setSprite((Sprite*)Engine::instance()->assetLoader()->loadAsset("/background.sprite", "Sprite"));
     r->setColor(Color::white);
     go->setParent(scene->rootObject());
+    go->setPosition(Vector3(0, 2));
+
+    go = new GameObject("Player");
+    r = (SpriteRenderer*)go->addComponent(new SpriteRenderer());
+    r->setSprite((Sprite*)Engine::instance()->assetLoader()->loadAsset("/player_idle.sprite", "Sprite"));
+    r->setColor(Color::white);
+    SpriteAnimator *animator = (SpriteAnimator*)go->addComponent(new SpriteAnimator());
+    PlayerMovement *pm = (PlayerMovement*)go->addComponent(new PlayerMovement());
+    pm->setMinBounds(Vector3(-2, -10));
+    pm->setMaxBounds(Vector3(2, 10));
+    pm->setSpeed(1);
+    PlayerAnimations *pa = (PlayerAnimations*)go->addComponent(new PlayerAnimations());
+    pa->setIdleAnimation((SpriteAnimation*)Engine::instance()->assetLoader()->loadAsset("/player_idle.spriteanim", "SpriteAnimation"));
+    go->setParent(scene->rootObject());
     go->setPosition(Vector3::zero);
+
+    Vector3 screen = Engine::instance()->runtimeModule()->screenResolution();
+
+    go = new GameObject("StartText");
+    UIText *uiText = (UIText*)go->addComponent(new UIText());
+    uiText->setFont((Font*)Engine::instance()->assetLoader()->loadAsset("/LCDSolid.ttf", "Font"));
+    uiText->setFontSize(32);
+    uiText->setText("Press Enter to start");
+    go->setParent(scene->rootObject());
+    go->setPosition(Vector3(100, screen.y / 2 + 100));
 }
 
 int main(int argc, char *argv[])

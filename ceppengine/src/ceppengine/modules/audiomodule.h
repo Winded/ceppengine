@@ -37,14 +37,11 @@ class AudioModule : public Module
 
         virtual std::string name() const;
 
-        float masterVolume() const;
-        void setMasterVolume(float volume);
+        virtual float masterVolume() const = 0;
+        virtual void setMasterVolume(float volume) = 0;
 
         virtual IAudioHandle *createHandle() = 0;
         virtual void destroyHandle(IAudioHandle *handle) = 0;
-
-    private:
-        float mMasterVolume;
 };
 
 }

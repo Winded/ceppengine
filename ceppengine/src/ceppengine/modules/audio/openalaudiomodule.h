@@ -62,6 +62,9 @@ class OpenALModule : public AudioModule
         virtual IAudioHandle *createHandle();
         virtual void destroyHandle(IAudioHandle *handle);
 
+        virtual float masterVolume() const;
+        virtual void setMasterVolume(float volume);
+
     protected:
         virtual void initialize();
 
@@ -73,6 +76,8 @@ class OpenALModule : public AudioModule
         std::vector<OpenALClip> mClips;
         ALCdevice *mDevice;
         ALCcontext *mContext;
+
+        float mMasterVolume;
 
         friend class OpenALAudioHandle;
 };

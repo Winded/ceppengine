@@ -97,7 +97,7 @@ void OpenALAudioHandle::stop()
     alSourceStop(mHandle);
 }
 
-OpenALModule::OpenALModule() : mDevice(0)
+OpenALModule::OpenALModule() : mDevice(0), mMasterVolume(1)
 {
 
 }
@@ -135,6 +135,16 @@ void OpenALModule::destroyHandle(IAudioHandle *handle)
         alDeleteSources(1, &((*it)->mHandle));
         it = mHandles.erase(it);
     }
+}
+
+float OpenALModule::masterVolume() const
+{
+    return mMasterVolume;
+}
+
+void OpenALModule::setMasterVolume(float volume)
+{
+    mMasterVolume = volume;
 }
 
 void OpenALModule::initialize()
