@@ -77,6 +77,8 @@ class GLESRenderModule : public RenderModule
         void render();
 
     private:
+        bool mInitialized;
+
         bool mVSync;
 
         EGLNativeWindowType mNativeWindow;

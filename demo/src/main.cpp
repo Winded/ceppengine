@@ -199,6 +199,9 @@ int main(int argc, char *argv[])
     UNUSED_PARAM(argc);
     UNUSED_PARAM(argv);
 
+    HWND hWnd = GetConsoleWindow();
+    ShowWindow(hWnd, SW_HIDE);
+
     Engine engine;
     WindowsRuntimeModule *runtimeMod = new WindowsRuntimeModule();
     runtimeMod->proc = WindowProc;
@@ -230,4 +233,14 @@ int main(int argc, char *argv[])
     }
 
     return 0;
+}
+
+int CALLBACK WinMain(_In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
+{
+    UNUSED_PARAM(hInstance);
+    UNUSED_PARAM(hPrevInstance);
+    UNUSED_PARAM(lpCmdLine);
+    UNUSED_PARAM(nCmdShow);
+
+    return main(0, 0);
 }

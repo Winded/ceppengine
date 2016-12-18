@@ -151,13 +151,13 @@ void OpenALModule::initialize()
 {
     mDevice = alcOpenDevice(0);
     if(!mDevice) {
-        fprintf(stderr, "OpenALModule: Failed to initialize OpenAL device!");
+        fprintf(stderr, "OpenALModule: Failed to initialize OpenAL device!\n");
         return;
     }
 
     mContext = alcCreateContext(mDevice, 0);
     if(!alcMakeContextCurrent(mContext)) {
-        fprintf(stderr, "OpenALModule: Failed to initialize OpenAL device!");
+        fprintf(stderr, "OpenALModule: Failed to initialize OpenAL device!\n");
         alcDestroyContext(mContext);
         alcCloseDevice(mDevice);
         return;

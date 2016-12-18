@@ -133,7 +133,7 @@ void GLESRenderer::applyShaderParams(int program, const std::vector<ShaderParame
 }
 
 GLESRenderModule::GLESRenderModule()
-    : mVSync(false), mNativeWindow(0), mNativeDisplay(0), mEGLDisplay(0), mEGLContext(0), mEGLSurface(0)
+    : mInitialized(false), mVSync(false), mNativeWindow(0), mNativeDisplay(0), mEGLDisplay(0), mEGLContext(0), mEGLSurface(0)
 {
     mRenderer.module = this;
 }
@@ -468,10 +468,14 @@ void GLESRenderModule::initialize()
 
     // Update swap interval
     setVSync(mVSync);
+
+    mInitialized = true;
 }
 
 void GLESRenderModule::render()
 {
+    if(!mInitialized) return;
+
     Camera *camera = Engine::instance()->scene()->mainCamera();
 
     if(camera) {
