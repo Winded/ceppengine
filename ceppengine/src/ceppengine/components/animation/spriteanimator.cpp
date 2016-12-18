@@ -47,9 +47,21 @@ float SpriteAnimator::currentFrameTime() const
     return mFrameTime;
 }
 
+bool SpriteAnimator::isPlaying() const
+{
+    return mPlaying;
+}
+
 void SpriteAnimator::play()
 {
     mPlaying = true;
+
+    if(mAnimation) {
+        const SpriteAnimation::Frame *frame = mAnimation->getFrame(mFrame);
+        if(frame) {
+            mRenderer->setSprite(frame->sprite);
+        }
+    }
 }
 
 void SpriteAnimator::pause()
@@ -83,8 +95,14 @@ void SpriteAnimator::update(float deltaTime)
     if(mFrameTime > frame->duration) {
         mFrameTime = 0;
         mFrame++;
-        if(mFrame >= mAnimation->numFrames())
-            mFrame = 0;
+        if(mFrame >= mAnimation->numFrames()) {
+            if(mAnimation->loop())
+                mFrame = 0;
+            else {
+                mFrame--;
+                mPlaying = false;
+            }
+        }
         frame = mAnimation->getFrame(mFrame);
         mRenderer->setSprite(frame->sprite);
     }

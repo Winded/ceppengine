@@ -1,0 +1,10 @@
+{
+    "type": "SpriteAnimation",
+    "loop": true,
+    "frames": [
+        {
+            "duration": 1,
+            "sprite": "/player_idle.sprite"
+        }
+    ]
+}

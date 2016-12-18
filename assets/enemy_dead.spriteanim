@@ -1,0 +1,10 @@
+{
+    "type": "SpriteAnimation",
+    "loop": false,
+    "frames": [
+        {
+            "duration": 1,
+            "sprite": "/enemy_dead.sprite"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "type": "SpriteAnimation",
+    "loop": false,
+    "frames": [
+        {
+            "duration": 0.1,
+            "sprite": "/player_shoot1.sprite"
+        },
+        {
+            "duration": 0.2,
+            "sprite": "/player_shoot2.sprite"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "type": "Sprite",
+    "texture": "/creatures.png",
+    "textureCoordinates": [0, 546],
+    "size": [30, 30],
+    "pivot": [0.5, 0.5],
+    "pixelsPerUnit": 30
+}

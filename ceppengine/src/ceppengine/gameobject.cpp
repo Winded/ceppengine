@@ -16,6 +16,7 @@ GameObject::GameObject(const std::string &name)
     mParent = 0;
     mActive = true;
     mStartCalled = false;
+    mDestroyed = false;
     mChildrenChanged = true;
     mComponentsChanged = true;
     mLocalScale = Vector3::one;
@@ -118,6 +119,24 @@ bool GameObject::isActiveInHierarchy() const
         return mParent->isActiveInHierarchy();
     else
         return true;
+}
+
+bool GameObject::isDestroyed() const
+{
+    return mDestroyed;
+}
+
+void GameObject::destroy()
+{
+    for(auto it = mIteratedChildren.begin(); it != mIteratedChildren.end(); ++it) {
+        (*it)->destroy();
+    }
+    for(auto it = mIteratedComponents.begin(); it != mIteratedComponents.end(); ++it) {
+        (*it)->destroy();
+    }
+    if(mParent)
+        setParent(0, true);
+    mDestroyed = true;
 }
 
 Vector3 GameObject::position()
@@ -245,7 +264,7 @@ Matrix4 GameObject::localToWorldMatrix()
     Matrix4 tMatrix = mLocalPosition.toPositionMatrix();
     Matrix4 rMatrix = mLocalRotation.toRotationMatrix();
     Matrix4 sMatrix = mLocalScale.toScaleMatrix();
-    Matrix4 m = sMatrix * tMatrix * rMatrix;
+    Matrix4 m = tMatrix * rMatrix * sMatrix;
 
     if(mParent) {
         Matrix4 pMatrix = mParent->localToWorldMatrix();
@@ -303,7 +322,20 @@ Component *GameObject::addComponent(Component *component)
 {
     component->mGameObject = this;
     mComponents.push_back(component);
+    mComponentsChanged = true;
     return component;
+}
+
+void GameObject::removeComponent(Component *component)
+{
+    auto it = std::find_if(mComponents.begin(), mComponents.end(), [component](const Ref<Component> &c) {
+            return component == c;
+    });
+    if(it != mComponents.end()) {
+        (*it)->mGameObject = 0;
+        it = mComponents.erase(it);
+        mComponentsChanged = true;
+    }
 }
 
 std::vector<GameObject *> GameObject::recursiveFindGameObjects(const std::string &name)

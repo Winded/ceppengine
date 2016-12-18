@@ -10,7 +10,6 @@ SpriteRenderer::SpriteRenderer() : mColor(Color::white)
 
 SpriteRenderer::~SpriteRenderer()
 {
-    Engine::instance()->renderModule()->removeHandler(this);
 }
 
 std::string SpriteRenderer::typeName() const
@@ -51,7 +50,7 @@ void SpriteRenderer::setColor(const Color &color)
 
 void SpriteRenderer::render(IRenderer *renderer)
 {
-    if(!gameObject()->isActiveInHierarchy()) return;
+    if(!gameObject() || !gameObject()->isActiveInHierarchy()) return;
 
     renderer->setMesh(mMesh);
     renderer->setMaterial(mMaterial);
@@ -86,6 +85,11 @@ void SpriteRenderer::start()
     mMesh = new Mesh(*quad);
     calculateVertices();
     calculateTexCoords();
+}
+
+void SpriteRenderer::onDestroyed()
+{
+    Engine::instance()->renderModule()->removeHandler(this);
 }
 
 void SpriteRenderer::calculateVertices()

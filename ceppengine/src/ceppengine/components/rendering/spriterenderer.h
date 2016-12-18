@@ -31,6 +31,7 @@ class SpriteRenderer : public Component
 
     protected:
         virtual void start();
+        virtual void onDestroyed();
 
     private:
         void calculateVertices();

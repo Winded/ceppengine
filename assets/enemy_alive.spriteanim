@@ -1,0 +1,18 @@
+{
+    "type": "SpriteAnimation",
+    "loop": true,
+    "frames": [
+        {
+            "duration": 0.25,
+            "sprite": "/enemy1.sprite"
+        },
+        {
+            "duration": 0.25,
+            "sprite": "/enemy2.sprite"
+        },
+        {
+            "duration": 0.25,
+            "sprite": "/enemy3.sprite"
+        }
+    ]
+}

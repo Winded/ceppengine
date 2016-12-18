@@ -49,6 +49,7 @@ void PlayerAnimations::start()
 {
     mAnimator = (SpriteAnimator*)gameObject()->getComponent("SpriteAnimator");
     mMovement = (PlayerMovement*)gameObject()->getComponent("PlayerMovement");
+    mWeapon = (PlayerWeapon*)gameObject()->getComponent("PlayerWeapon");
     assert(mAnimator && mMovement);
 }
 
@@ -57,16 +58,21 @@ void PlayerAnimations::update(float deltaTime)
     Vector3 moveDir = mMovement->movementDirection();
 
     if(moveDir.x != 0) {
-        // Animation change
-        mFlipped = moveDir.x < 0;
+        mFlipped = moveDir.x > 0;
+        if(mFlipped)
+            gameObject()->setLocalScale(Vector3(-1, 1, 1));
+        else
+            gameObject()->setLocalScale(Vector3(1, 1, 1));
     }
-    else {
-        // Animation change
 
+    if(mWeapon->isShooting() && mAnimator->animation() != mShootAnimation) {
+        mAnimator->stop();
+        mAnimator->setAnimation(mShootAnimation);
+        mAnimator->play();
     }
-
-    if(mFlipped)
-        gameObject()->setScale(Vector3(-1, 1, 1));
-    else
-        gameObject()->setScale(Vector3(1, 1, 1));
+    else if(!mAnimator->isPlaying()) {
+        mAnimator->stop();
+        mAnimator->setAnimation(mIdleAnimation);
+        mAnimator->play();
+    }
 }

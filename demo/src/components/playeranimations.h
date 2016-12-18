@@ -1,6 +1,7 @@
 #pragma once
 
 #include "playermovement.h"
+#include "playerweapon.h"
 #include <ceppengine/components/component.h>
 #include <ceppengine/math/vector3.h>
 #include <ceppengine/components/animation/spriteanimator.h>
@@ -29,6 +30,7 @@ class PlayerAnimations : public cepp::Component
         bool mFlipped;
 
         cepp::Ref<PlayerMovement> mMovement;
+        cepp::Ref<PlayerWeapon> mWeapon;
 
         cepp::Ref<cepp::SpriteAnimator> mAnimator;
         cepp::Ref<cepp::SpriteAnimation> mIdleAnimation;

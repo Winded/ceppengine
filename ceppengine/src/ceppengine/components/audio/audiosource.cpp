@@ -10,8 +10,6 @@ AudioSource::AudioSource() : mHandle(0), mVolume(1), mPitch(1), mPlayOnStart(fal
 
 AudioSource::~AudioSource()
 {
-    if(mHandle)
-        Engine::instance()->audioModule()->destroyHandle(mHandle);
 }
 
 std::string AudioSource::typeName() const
@@ -113,6 +111,12 @@ void AudioSource::start()
 
     if(mPlayOnStart)
         play();
+}
+
+void AudioSource::onDestroyed()
+{
+    if(mHandle)
+        Engine::instance()->audioModule()->destroyHandle(mHandle);
 }
 
 } // namespace cepp

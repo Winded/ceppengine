@@ -133,9 +133,9 @@ Matrix4 Vector3::toScaleMatrix() const
 Vector3 Vector3::fromScaleMatrix(const Matrix4 &mat)
 {
     Vector3 scale;
-    scale.x = Math::sqrt(mat.m11 * mat.m11 + mat.m12 * mat.m12 + mat.m13 * mat.m13);
-    scale.y = Math::sqrt(mat.m21 * mat.m21 + mat.m22 * mat.m22 + mat.m23 * mat.m23);
-    scale.z = Math::sqrt(mat.m31 * mat.m31 + mat.m32 * mat.m32 + mat.m33 * mat.m33);
+    scale.x = mat.m11 + mat.m12 + mat.m13 + mat.m14;
+    scale.y = mat.m21 + mat.m22 + mat.m23 + mat.m24;
+    scale.z = mat.m31 + mat.m32 + mat.m33 + mat.m34;
     return scale;
 }
 

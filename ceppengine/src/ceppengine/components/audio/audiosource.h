@@ -40,6 +40,7 @@ class AudioSource : public Component
 
     protected:
         virtual void start();
+        virtual void onDestroyed();
 
     private:
         IAudioHandle *mHandle;

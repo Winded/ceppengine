@@ -3,7 +3,7 @@
 
 namespace cepp {
 
-Component::Component() : mGameObject(0), mStartCalled(false)
+Component::Component() : mGameObject(0), mStartCalled(false), mDestroyed(false)
 {
 
 }
@@ -18,6 +18,20 @@ GameObject *Component::gameObject() const
     return mGameObject;
 }
 
+bool Component::isDestroyed() const
+{
+    return mDestroyed;
+}
+
+void Component::destroy()
+{
+    mDestroyed = true;
+    onDestroyed();
+    if(gameObject()) {
+        gameObject()->removeComponent(this);
+    }
+}
+
 void Component::start()
 {
 
@@ -26,6 +40,10 @@ void Component::start()
 void Component::update(float deltaTime)
 {
     UNUSED_PARAM(deltaTime);
+}
+
+void Component::onDestroyed()
+{
 }
 
 } // namespace cepp

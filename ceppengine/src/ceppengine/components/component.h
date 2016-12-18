@@ -25,14 +25,18 @@ class Component : public Object
          */
         GameObject *gameObject() const;
 
+        bool isDestroyed() const;
+        void destroy();
+
     protected:
         virtual void start();
         virtual void update(float deltaTime);
+        virtual void onDestroyed();
 
     private:
         GameObject *mGameObject;
 
-        bool mStartCalled;
+        bool mStartCalled, mDestroyed;
 
         friend class GameObject;
 };

@@ -26,6 +26,8 @@ class SpriteAnimator : public Component
         int currentFrame() const;
         float currentFrameTime() const;
 
+        bool isPlaying() const;
+
         void play();
         void pause();
         void stop();

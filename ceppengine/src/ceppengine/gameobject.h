@@ -44,6 +44,14 @@ class GameObject : public Object
 
         bool isActiveInHierarchy() const;
 
+        bool isDestroyed() const;
+        /**
+         * Destroy the GameObject. Note that this does not automatically delete the object from memory;
+         * it first destroys all children and components, and then removes this game object from it's parent, removing
+         * it from the scene hierarchy. If no other object references this object, it is deleted from memory.
+         */
+        void destroy();
+
         Vector3 position();
         void setPosition(const Vector3 &position);
         Vector3 rotation();
@@ -73,6 +81,7 @@ class GameObject : public Object
          * Add a new component to this game object
          */
         Component *addComponent(Component *component);
+        void removeComponent(Component *component);
 
     private:
         std::vector<GameObject*> recursiveFindGameObjects(const std::string &name);
@@ -90,14 +99,14 @@ class GameObject : public Object
         GameObject *mParent;
 
         std::vector<Ref<GameObject>> mChildren;
-        std::vector<GameObject*> mIteratedChildren; // Different list for update loop iteration to allow removal and addition of children
+        std::vector<Ref<GameObject>> mIteratedChildren; // Different list for update loop iteration to allow removal and addition of children
 
         std::vector<Ref<Component>> mComponents;
-        std::vector<Component*> mIteratedComponents;
+        std::vector<Ref<Component>> mIteratedComponents;
 
         bool mChildrenChanged, mComponentsChanged;
 
-        bool mActive, mStartCalled;
+        bool mActive, mStartCalled, mDestroyed;
 
         Vector3 mLocalPosition, mLocalRotation, mLocalScale;
 
